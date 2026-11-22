@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Belloi.shop — CRM, Facturación e Inventario</title>
+<style>
+  :root {
+    --vino: #5D0E26;
+    --vino-oscuro: #3D0818;
+    --vino-suave: #FDF2F5;
+    --dorado: #D4AF37;
+    --amarillo: #FFD600;
+    --negro: #121215;
+    --blanco: #FFFFFF;
+    --fondo: #F4F4F6;
+    --borde: #E2E2E8;
+    --gris: #52525B;
+    --verde: #16A34A;
+    --verde-claro: #DCFCE7;
+    --rojo: #DC2626;
+    --rojo-claro: #FEE2E2;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--fondo);
+    color: var(--negro);
+    padding-bottom: 75px;
+  }
+
+  /* PANTALLA DE ACCESO */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(145deg, var(--vino-oscuro), var(--vino));
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .login-card {
+    background: var(--blanco);
+    width: 100%;
+    max-width: 380px;
+    padding: 28px 22px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+    border-top: 6px solid var(--dorado);
+  }
+
+  .login-card h1 {
+    margin: 0 0 6px 0;
+    color: var(--vino);
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  .login-card p {
+    margin: 0 0 18px 0;
+    color: var(--gris);
+    font-size: 13px;
+  }
+
+  /* HEADER SUPERIOR */
+  .topbar {
+    background: var(--vino);
+    color: var(--blanco);
+    padding: 12px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 800;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--dorado);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  }
+
+  .brand-title {
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: 0.4px;
+  }
+
+  .brand-title span {
+    color: var(--amarillo);
+  }
+
+  .tasas-pill {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .pill-moneda {
+    background: rgba(255,255,255,0.14);
+    padding: 4px 8px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* NAVEGACIÓN INFERIOR / SUPERIOR */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--blanco);
+    display: flex;
+    justify-content: space-around;
+    border-top: 2px solid var(--vino);
+    padding: 6px 2px;
+    z-index: 850;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: var(--gris);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 8px;
+    flex: 1;
+  }
+
+  .nav-btn span.ico {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+
+  .nav-btn.activo {
+    color: var(--vino);
+    background: var(--vino-suave);
+  }
+
+  /* CONTENEDORES Y TARJETAS */
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 12px;
+  }
+
+  .seccion {
+    display: none;
+  }
+
+  .seccion.activa {
+    display: block;
+  }
+
+  .card {
+    background: var(--blanco);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--borde);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+  }
+
+  .card-title {
+    margin: 0 0 10px 0;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--vino);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* FORMULARIOS */
+  label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--gris);
+    margin-bottom: 4px;
+    margin-top: 8px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 11px;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 9px;
+    font-size: 14px;
+    outline: none;
+    background: var(--blanco);
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--vino);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13.5px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btn-vino {
+    background: var(--vino);
+    color: var(--blanco);
+  }
+
+  .btn-dorado {
+    background: var(--amarillo);
+    color: var(--negro);
+    border: 1.5px solid var(--negro);
+  }
+
+  .btn-verde {
+    background: var(--verde);
+    color: var(--blanco);
+  }
+
+  .btn-outline {
+    background: var(--blanco);
+    color: var(--vino);
+    border: 1.5px solid var(--vino);
+  }
+
+  .btn-sm {
+    padding: 6px 10px;
+    font-size: 11.5px;
+    width: auto;
+    margin-top: 0;
+  }
+
+  /* KPI DASHBOARD */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  @media (min-width: 700px) {
+    .kpi-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .kpi-box {
+    background: var(--blanco);
+    padding: 12px;
+    border-radius: 12px;
+    border-left: 5px solid var(--vino);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+  }
+
+  .kpi-box.verde { border-left-color: var(--verde); }
+  .kpi-box.rojo { border-left-color: var(--rojo); }
+  .kpi-box.dorado { border-left-color: var(--dorado); }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--gris);
+    text-transform: uppercase;
+  }
+
+  .kpi-val {
+    font-size: 19px;
+    font-weight: 900;
+    margin-top: 4px;
+    color: var(--negro);
+  }
+
+  .kpi-sub {
+    font-size: 10.5px;
+    color: var(--gris);
+    margin-top: 2px;
+  }
+
+  /* LISTADOS Y TABLAS */
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borde);
+    gap: 8px;
+  }
+
+  .item-row:last-child {
+    border-bottom: none;
+  }
+
+  .badge {
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 800;
+    display: inline-block;
+  }
+
+  .badge-pagada { background: var(--verde-claro); color: var(--verde); }
+  .badge-abonada { background: #FEF9C3; color: #854D0E; }
+  .badge-pendiente { background: var(--rojo-claro); color: var(--rojo); }
+  .badge-privado { background: var(--vino); color: var(--blanco); }
+
+  .totales-panel {
+    background: var(--negro);
+    color: var(--blanco);
+    padding: 14px;
+    border-radius: 12px;
+    margin-top: 12px;
+  }
+
+  .totales-linea {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .totales-final {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--amarillo);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+
+  /* MODAL */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 3000;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .modal-box {
+    background: var(--blanco);
+    max-width: 440px;
+    margin: 20px auto;
+    padding: 18px;
+    border-radius: 16px;
+    border-top: 6px solid var(--vino);
+  }
+
+  .loader-bar {
+    display: none;
+    background: var(--amarillo);
+    color: var(--negro);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- PANTALLA DE BLOQUEO -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>BELLOI.SHOP</h1>
+    <p>Panel Interno: CRM, Facturación e Inventario</p>
+    <input type="password" id="input-pin" placeholder="Ingresa tu clave de acceso" onkeyup="if(event.key==='Enter') verificarPin()">
+    <button class="btn btn-vino" onclick="verificarPin()">Entrar al Sistema</button>
+  </div>
+</div>
+
+<!-- BARRA SUPERIOR -->
+<div class="topbar">
+  <div class="brand-title">BELLOI<span>.SHOP</span> CRM</div>
+  <div class="tasas-pill">
+    <span class="pill-moneda" id="badge-bcv" onclick="cambiarTasaManual('BCV')">BCV: Bs.--</span>
+    <span class="pill-moneda" id="badge-cop" onclick="cambiarTasaManual('COP')">COP: $--</span>
+    <span class="pill-moneda" onclick="sincronizarTodo()" title="Actualizar datos">🔄</span>
+  </div>
+</div>
+<div class="loader-bar" id="loader-bar">Sincronizando con Google Sheets...</div>
+
+<div class="container">
+
+  <!-- ==========================================
+       1. FACTURADOR / NUEVA VENTA
+       ========================================== -->
+  <div id="sec-facturar" class="seccion activa">
+    <div class="card">
+      <div class="card-title">
+        <span>🧾 Nueva Factura / Pedido</span>
+        <button class="btn btn-outline btn-sm" onclick="abrirModalCliente()">+ Nuevo Cliente</button>
+      </div>
+
+      <label>Cliente (CRM)</label>
+      <select id="sel-cliente-factura">
+        <option value="CLI-GEN">Cliente General (Contado rápido)</option>
+      </select>
+
+      <div class="grid-2" style="margin-top:8px;">
+        <div>
+          <label>Agregar del Inventario / Servicios</label>
+          <select id="sel-producto-factura"></select>
+        </div>
+        <div>
+          <label>Talla / Nota del ítem</label>
+          <input type="text" id="inp-detalle-item" placeholder="Ej: Talla M / Logo pecho">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label>Cantidad</label>
+          <input type="number" id="inp-cant-item" value="1" min="1">
+        </div>
+        <div style="display:flex; align-items:flex-end;">
+          <button class="btn btn-vino" style="margin-top:0;" onclick="agregarItemFactura()">+ Añadir Ítem</button>
+        </div>
+      </div>
+
+      <!-- CONCEPTO LIBRE (SERVICIO ESPECIAL AL MOMENTO) -->
+      <details style="margin-top:10px; background:var(--vino-suave); padding:8px 10px; border-radius:9px;">
+        <summary style="font-size:12px; font-weight:800; color:var(--vino); cursor:pointer;">✨ Agregar Concepto Libre / Servicio Especial no listado</summary>
+        <div class="grid-2">
+          <div>
+            <label>Descripción del trabajo</label>
+            <input type="text" id="libre-nombre" placeholder="Ej: Diseño logo vectorial">
+          </div>
+          <div>
+            <label>Precio USD ($)</label>
+            <input type="number" id="libre-precio" step="0.01" placeholder="15.00">
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="agregarConceptoLibre()">+ Incluir Concepto Libre</button>
+      </details>
+    </div>
+
+    <!-- DETALLE DE LA FACTURA ACTUAL -->
+    <div class="card">
+      <div class="card-title">Detalle de Factura</div>
+      <div id="lista-items-factura">
+        <p style="font-size:12.5px; color:var(--gris);">Aún no has agregado productos o servicios.</p>
+      </div>
+
+      <!-- DESCUENTO -->
+      <div class="grid-2" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--borde);">
+        <div>
+          <label>Tipo de Descuento</label>
+          <select id="tipo-descuento" onchange="recalcularFactura()">
+            <option value="monto">Monto fijo ($ USD)</option>
+            <option value="porcentaje">Porcentaje (%)</option>
+          </select>
+        </div>
+        <div>
+          <label>Valor Descuento</label>
+          <input type="number" id="valor-descuento" value="0" min="0" step="0.01" oninput="recalcularFactura()">
+        </div>
+      </div>
+
+      <!-- MODALIDAD DE PAGO (CONTADO / CRÉDITO / ABONO) -->
+      <div class="grid-2">
+        <div>
+          <label>Modalidad de Pago</label>
+          <select id="modalidad-pago" onchange="toggleCamposAbono()">
+            <option value="Contado">Contado (Pago Completo)</option>
+            <option value="Abono">Con Abono / Anticipo 50%</option>
+            <option value="Credito">Crédito Completo ($0 inicial)</option>
+          </select>
+        </div>
+        <div id="box-monto-abono" style="display:none;">
+          <label>Monto Abonado ($ USD)</label>
+          <input type="number" id="monto-abono-inicial" value="0" min="0" step="0.01" oninput="recalcularFactura()">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label>Moneda recibida</label>
+          <select id="moneda-pago-venta">
+            <option value="USD">Dólares ($ USD)</option>
+            <option value="COP">Pesos Colombianos (COP)</option>
+            <option value="VES">Bolívares (Bs.)</option>
+          </select>
+        </div>
+        <div>
+          <label>Método de pago</label>
+          <select id="metodo-pago-venta">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Pago Móvil">Pago Móvil</option>
+            <option value="Transferencia / Nequi">Transferencia / Nequi</option>
+            <option value="Zelle / Binance">Zelle / Binance</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- TOTALES MULTI-MONEDA -->
+      <div class="totales-panel">
+        <div class="totales-linea"><span>Subtotal:</span><span id="fac-subtotal">$0,00</span></div>
+        <div class="totales-linea"><span>Descuento:</span><span id="fac-descuento">-$0,00</span></div>
+        <div class="totales-linea totales-final"><span>TOTAL USD:</span><span id="fac-total-usd">$0,00</span></div>
+        <div class="totales-linea"><span>Total COP:</span><span id="fac-total-cop">$ 0</span></div>
+        <div class="totales-linea"><span>Total Bs. (BCV):</span><span id="fac-total-bs">Bs. 0,00</span></div>
+        <div class="totales-linea" id="linea-saldo-fac" style="display:none; color:#FCA5A5; font-weight:800; margin-top:6px;">
+          <span>Saldo Pendiente por Cobrar:</span><span id="fac-saldo-usd">$0,00</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <button class="btn btn-vino" onclick="guardarFactura(false)">💾 Guardar y Descontar Stock</button>
+        <button class="btn btn-dorado" onclick="guardarFactura(true)">📲 Guardar y Enviar WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       2. CRÉDITOS Y ABONOS (CUENTAS POR COBRAR)
+       ========================================== -->
+  <div id="sec-creditos" class="seccion">
+    <div class="card">
+      <div class="card-title">⏳ Facturas Pendientes y Abonos</div>
+      <div id="lista-creditos">Cargando cuentas por cobrar...</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📜 Historial de Ventas Recientes</div>
+      <div id="lista-ventas-historial"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       3. INVENTARIO Y SERVICIOS PRIVADOS
+       ========================================== -->
+  <div id="sec-inventario" class="seccion">
+    <div class="card">
+      <div class="card-title">
+        <span>📦 Inventario y Servicios Ocultos</span>
+        <button class="btn btn-vino btn-sm" onclick="abrirModalServicioPrivado()">+ Servicio Privado</button>
+      </div>
+      <input type="text" id="buscar-inv" placeholder="Buscar producto, talla o servicio privado..." onkeyup="renderizarInventario()">
+      <div id="lista-inventario" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       4. ESCÁNER DE COMPRAS (OCR) Y GASTOS
+       ========================================== -->
+  <div id="sec-compras" class="seccion">
+    <div class="card">
+      <div class="card-title">📸 Escáner de Facturas de Compra (IA)</div>
+      <p style="font-size:12px; color:var(--gris); margin-top:0;">Toma una foto a la factura de tu proveedor para detectar productos, cantidades y costos automáticamente.</p>
+
+      <input type="file" id="foto-factura" accept="image/*" capture="environment" onchange="procesarFotoFactura(event)">
+      <div id="estado-escaner" style="font-size:12.5px; font-weight:800; color:var(--vino); margin-top:8px;"></div>
+
+      <label>Proveedor</label>
+      <input type="text" id="comp-proveedor" placeholder="Nombre del proveedor">
+
+      <div id="comp-items-container" style="margin-top:10px;"></div>
+      <button class="btn btn-outline btn-sm" onclick="agregarFilaCompraManual()">+ Agregar Producto Manual</button>
+
+      <div class="grid-2" style="margin-top:10px;">
+        <div>
+          <label>Costo de Envío / Flete ($ USD)</label>
+          <input type="number" id="comp-envio" value="0" step="0.01" oninput="recalcularCompra()">
+        </div>
+        <div>
+          <label>Total Compra + Envío ($ USD)</label>
+          <input type="text" id="comp-total" readonly value="$0.00" style="font-weight:900; background:#F4F4F6;">
+        </div>
+      </div>
+
+      <button class="btn btn-verde" onclick="guardarCompraInventario()">📥 Sumar al Inventario y Registrar Compra</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💸 Registrar Gasto Operativo</div>
+      <div class="grid-2">
+        <div>
+          <label>Categoría</label>
+          <select id="gasto-cat">
+            <option value="Insumos / Tintas">Insumos / Tintas</option>
+            <option value="Envíos / Fletes">Envíos / Fletes</option>
+            <option value="Servicios / Internet">Servicios / Internet</option>
+            <option value="Alquiler / Local">Alquiler / Local</option>
+            <option value="Publicidad">Publicidad</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label>Monto ($ USD)</label>
+          <input type="number" id="gasto-monto" step="0.01" placeholder="10.00">
+        </div>
+      </div>
+      <label>Descripción</label>
+      <input type="text" id="gasto-desc" placeholder="Ej: Compra de papel DTF / Pago internet">
+      <button class="btn btn-vino" onclick="guardarGasto()">Guardar Gasto</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       5. CRM CLIENTES Y BALANCE FINANCIERO
+       ========================================== -->
+  <div id="sec-balance" class="seccion">
+    <div class="kpi-grid">
+      <div class="kpi-box verde">
+        <div class="kpi-label">Ingresos Cobrados</div>
+        <div class="kpi-val" id="kpi-cobrado">$0,00</div>
+        <div class="kpi-sub">Dinero real en caja</div>
+      </div>
+      <div class="kpi-box dorado">
+        <div class="kpi-label">Por Cobrar (Crédito)</div>
+        <div class="kpi-val" id="kpi-por-cobrar">$0,00</div>
+        <div class="kpi-sub">Saldos pendientes</div>
+      </div>
+      <div class="kpi-box rojo">
+        <div class="kpi-label">Compras + Gastos</div>
+        <div class="kpi-val" id="kpi-egresos">$0,00</div>
+        <div class="kpi-sub">Mercancía, fletes y gastos</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Ganancia Neta Real</div>
+        <div class="kpi-val" id="kpi-ganancia">$0,00</div>
+        <div class="kpi-sub">Cobrado menos egresos</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>👥 Base de Datos de Clientes (CRM)</span>
+        <button class="btn btn-vino btn-sm" onclick="abrirModalCliente()">+ Cliente</button>
+      </div>
+      <div id="lista-clientes-crm"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ Conexión Google Apps Script & Gemini IA</div>
+      <label>URL de tu Web App (Google Apps Script)</label>
+      <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/..../exec">
+
+      <label>API Key Gratuita de Google AI Studio (Para escáner de fotos)</label>
+      <input type="password" id="cfg-gemini-key" placeholder="AIzaSy...">
+
+      <label>Clave de acceso a esta App</label>
+      <input type="text" id="cfg-pin" value="1234">
+
+      <button class="btn btn-vino" onclick="guardarConfiguracion()">Guardar Configuración</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- BARRA DE NAVEGACIÓN INFERIOR -->
+<nav class="nav-bar">
+  <button class="nav-btn activo" onclick="cambiarTab('sec-facturar', this)"><span class="ico">🧾</span>Facturar</button>
+  <button class="nav-btn" onclick="cambiarTab('sec-creditos', this)"><span class="ico">⏳</span>Créditos</button>
+  <button class="nav-btn" onclick="cambiarTab('sec-inventario', this)"><span class="ico">📦</span>Stock</button>
+  <button class="nav-btn" onclick="cambiarTab('sec-compras', this)"><span class="ico">📸</span>Compras</button>
+  <button class="nav-btn" onclick="cambiarTab('sec-balance', this)"><span class="ico">📊</span>CRM/Caja</button>
+</nav>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div id="modal-cliente" class="modal-bg">
+  <div class="modal-box">
+    <div class="card-title">
+      <span>👤 Registrar Nuevo Cliente</span>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModales()">×</button>
+    </div>
+    <label>Nombre completo / Empresa</label>
+    <input type="text" id="cli-nombre" placeholder="Ej: María Pérez">
+    <label>WhatsApp / Teléfono</label>
+    <input type="text" id="cli-tel" placeholder="Ej: +584241234567">
+    <label>Ciudad (Arauca / Guasdualito / Otra)</label>
+    <input type="text" id="cli-ciudad" placeholder="Ej: Guasdualito">
+    <label>Notas (Tallas habituales, preferencias)</label>
+    <textarea id="cli-notas" rows="2" placeholder="Ej: Pide camisas talla M, prefiere DTF"></textarea>
+    <button class="btn btn-vino" onclick="crearCliente()">Guardar Cliente</button>
+  </div>
+</div>
+
+<!-- MODAL NUEVO SERVICIO PRIVADO -->
+<div id="modal-privado" class="modal-bg">
+  <div class="modal-box">
+    <div class="card-title">
+      <span>🔒 Nuevo Servicio Especial (No público)</span>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModales()">×</button>
+    </div>
+    <label>Nombre del servicio / producto</label>
+    <input type="text" id="priv-nombre" placeholder="Ej: Estampado DTF por metro">
+    <label>Detalle</label>
+    <input type="text" id="priv-detalle" placeholder="Ej: Solo clientes mayoristas">
+    <div class="grid-2">
+      <div>
+        <label>Precio Venta ($ USD)</label>
+        <input type="number" id="priv-precio" step="0.01">
+      </div>
+      <div>
+        <label>Costo ($ USD)</label>
+        <input type="number" id="priv-costo" step="0.01">
+      </div>
+    </div>
+    <label>Stock inicial</label>
+    <input type="number" id="priv-stock" value="100">
+    <button class="btn btn-vino" onclick="crearServicioPrivado()">Guardar en Catálogo Privado</button>
+  </div>
+</div>
+
+<!-- MODAL REGISTRAR ABONO -->
+<div id="modal-abono" class="modal-bg">
+  <div class="modal-box">
+    <div class="card-title">
+      <span>💵 Registrar Abono a Factura</span>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModales()">×</button>
+    </div>
+    <p id="abono-info-factura" style="font-size:13px; font-weight:700;"></p>
+    <input type="hidden" id="abono-id-factura">
+    <input type="hidden" id="abono-cliente-nombre">
+    <label>Monto del Abono en Dólares ($ USD)</label>
+    <input type="number" id="abono-monto-usd" step="0.01">
+    <label>Moneda en que pagó el cliente</label>
+    <select id="abono-moneda">
+      <option value="USD">Dólares ($ USD)</option>
+      <option value="COP">Pesos Colombianos (COP)</option>
+      <option value="VES">Bolívares (Bs.)</option>
+    </select>
+    <label>Método de pago</label>
+    <input type="text" id="abono-metodo" placeholder="Ej: Pago Móvil / Efectivo / Nequi">
+    <button class="btn btn-verde" onclick="confirmarAbono()">Registrar Abono</button>
+  </div>
+</div>
+
+<script>
+  // ==========================================
+  // ESTADO GLOBAL Y CONFIGURACIÓN
+  // ==========================================
+  let SCRIPT_URL = localStorage.getItem("belloi_script_url") || "";
+  let GEMINI_KEY = localStorage.getItem("belloi_gemini_key") || "";
+  let APP_PIN = localStorage.getItem("belloi_app_pin") || "1234";
+
+  let tasaBCV = parseFloat(localStorage.getItem("tasa_bcv_belloi")) || 45.00;
+  let tasaCOP = parseFloat(localStorage.getItem("tasa_cop_belloi")) || 4200;
+
+  let db = {
+    inventario: [],
+    clientes: [],
+    ventas: [],
+    abonos: [],
+    compras: [],
+    gastos: []
+  };
+
+  let itemsFactura = [];
+  let itemsCompra = [];
+
+  document.getElementById("cfg-script-url").value = SCRIPT_URL;
+  document.getElementById("cfg-gemini-key").value = GEMINI_KEY;
+  document.getElementById("cfg-pin").value = APP_PIN;
+
+  function verificarPin() {
+    const val = document.getElementById("input-pin").value;
+    if (val === APP_PIN) {
+      document.getElementById("login-screen").style.display = "none";
+      iniciarApp();
+    } else {
+      alert("Clave incorrecta");
+    }
+  }
+
+  function guardarConfiguracion() {
+    SCRIPT_URL = document.getElementById("cfg-script-url").value.trim();
+    GEMINI_KEY = document.getElementById("cfg-gemini-key").value.trim();
+    APP_PIN = document.getElementById("cfg-pin").value.trim() || "1234";
+
+    localStorage.setItem("belloi_script_url", SCRIPT_URL);
+    localStorage.setItem("belloi_gemini_key", GEMINI_KEY);
+    localStorage.setItem("belloi_app_pin", APP_PIN);
+    alert("Configuración guardada.");
+    sincronizarTodo();
+  }
+
+  function cambiarTab(idSec, btn) {
+    document.querySelectorAll(".seccion").forEach(s => s.classList.remove("activa"));
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("activo"));
+    document.getElementById(idSec).classList.add("activa");
+    btn.classList.add("activo");
+  }
+
+  function fmtUSD(n) {
+    return "$" + (parseFloat(n) || 0).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function fmtCOP(usd) {
+    return "$ " + Math.floor((parseFloat(usd) || 0) * tasaCOP).toLocaleString("es-CO");
+  }
+
+  function fmtBS(usd) {
+    return "Bs. " + ((parseFloat(usd) || 0) * tasaBCV).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  async function obtenerTasas() {
+    document.getElementById("badge-bcv").innerText = `BCV: Bs.${tasaBCV.toFixed(2)}`;
+    document.getElementById("badge-cop").innerText = `COP: $${tasaCOP}`;
+    try {
+      const r1 = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+      if (r1.ok) {
+        const d1 = await r1.json();
+        const v1 = parseFloat(d1.promedio || d1.venta);
+        if (v1 > 0) { tasaBCV = v1; localStorage.setItem("tasa_bcv_belloi", tasaBCV); }
+      }
+    } catch (e) {}
+    try {
+      const r2 = await fetch("https://open.er-api.com/v6/latest/USD");
+      if (r2.ok) {
+        const d2 = await r2.json();
+        const v2 = parseFloat(d2?.rates?.COP);
+        if (v2 > 1000) { tasaCOP = Math.round(v2); localStorage.setItem("tasa_cop_belloi", tasaCOP); }
+      }
+    } catch (e) {}
+    document.getElementById("badge-bcv").innerText = `BCV: Bs.${tasaBCV.toFixed(2)}`;
+    document.getElementById("badge-cop").innerText = `COP: $${tasaCOP}`;
+    recalcularFactura();
+  }
+
+  function cambiarTasaManual(tipo) {
+    if (tipo === "BCV") {
+      const n = prompt("Nueva tasa BCV (Bs.):", tasaBCV);
+      if (n && parseFloat(n) > 0) { tasaBCV = parseFloat(n.replace(",", ".")); localStorage.setItem("tasa_bcv_belloi", tasaBCV); }
+    } else {
+      const n = prompt("Nueva tasa COP por $1 USD:", tasaCOP);
+      if (n && parseFloat(n) > 0) { tasaCOP = parseFloat(n); localStorage.setItem("tasa_cop_belloi", tasaCOP); }
+    }
+    document.getElementById("badge-bcv").innerText = `BCV: Bs.${tasaBCV.toFixed(2)}`;
+    document.getElementById("badge-cop").innerText = `COP: $${tasaCOP}`;
+    recalcularFactura();
+  }
+
+  async function iniciarApp() {
+    await obtenerTasas();
+    await sincronizarTodo();
+  }
+
+  async function sincronizarTodo() {
+    if (!SCRIPT_URL) {
+      alert("Paso pendiente: Pega la URL de tu Google Apps Script en la pestaña CRM/Caja > Configuración.");
+      return;
+    }
+    const loader = document.getElementById("loader-bar");
+    loader.style.display = "block";
+    try {
+      const resp = await fetch(`${SCRIPT_URL}?action=getAll&t=${Date.now()}`);
+      const data = await resp.json();
+      if (data.status === "ok") {
+        db = data;
+        poblarSelectores();
+        renderizarInventario();
+        renderizarCreditosYVentas();
+        renderizarBalanceYClientes();
+      }
+    } catch (e) {
+      console.error(e);
+      alert("No se pudo conectar con Google Sheets. Verifica la URL del Script.");
+    } finally {
+      loader.style.display = "none";
+    }
+  }
+
+  async function postScript(payload) {
+    if (!SCRIPT_URL) {
+      alert("Configura primero la URL de Google Apps Script.");
+      return null;
+    }
+    const loader = document.getElementById("loader-bar");
+    loader.style.display = "block";
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      return await resp.json();
+    } catch (e) {
+      alert("Error de conexión con el servidor.");
+      return null;
+    } finally {
+      loader.style.display = "none";
+    }
+  }
+
+  // ==========================================
+  // SELECTORES Y FACTURACIÓN
+  // ==========================================
+  function poblarSelectores() {
+    const selCli = document.getElementById("sel-cliente-factura");
+    selCli.innerHTML = `<option value="CLI-GEN">Cliente General (Contado rápido)</option>` +
+      db.clientes.map(c => `<option value="${c.ID_Cliente}">${c.Nombre} (${c.Telefono || 'Sin tel'})</option>`).join("");
+
+    const selProd = document.getElementById("sel-producto-factura");
+    selProd.innerHTML = db.inventario.map(p => {
+      const tagPriv = p.esPrivado ? "🔒 [PRIVADO] " : "";
+      return `<option value="${p.uid}">${tagPriv}${p.nombre} — ${fmtUSD(p.precio)} (Stock: ${p.stock})</option>`;
+    }).join("");
+  }
+
+  function agregarItemFactura() {
+    const uid = document.getElementById("sel-producto-factura").value;
+    const prod = db.inventario.find(p => p.uid === uid);
+    if (!prod) return;
+
+    const detalleExtra = document.getElementById("inp-detalle-item").value.trim();
+    const cantidad = Math.max(1, parseInt(document.getElementById("inp-cant-item").value) || 1);
+
+    itemsFactura.push({
+      uid: prod.uid,
+      hoja: prod.hoja,
+      fila: prod.fila,
+      nombre: prod.nombre,
+      detalle: detalleExtra || prod.detalle,
+      precio: prod.precio,
+      cantidad: cantidad,
+      esConceptoLibre: false
+    });
+
+    document.getElementById("inp-detalle-item").value = "";
+    document.getElementById("inp-cant-item").value = 1;
+    renderizarItemsFactura();
+  }
+
+  function agregarConceptoLibre() {
+    const nombre = document.getElementById("libre-nombre").value.trim();
+    const precio = parseFloat(document.getElementById("libre-precio").value) || 0;
+    if (!nombre || precio <= 0) {
+      alert("Escribe el nombre del servicio y su precio.");
+      return;
+    }
+    itemsFactura.push({
+      nombre: nombre,
+      detalle: "Servicio especial a medida",
+      precio: precio,
+      cantidad: 1,
+      esConceptoLibre: true
+    });
+    document.getElementById("libre-nombre").value = "";
+    document.getElementById("libre-precio").value = "";
+    renderizarItemsFactura();
+  }
+
+  function eliminarItemFactura(idx) {
+    itemsFactura.splice(idx, 1);
+    renderizarItemsFactura();
+  }
+
+  function renderizarItemsFactura() {
+    const box = document.getElementById("lista-items-factura");
+    if (itemsFactura.length === 0) {
+      box.innerHTML = `<p style="font-size:12.5px; color:var(--gris);">Aún no has agregado productos o servicios.</p>`;
+      recalcularFactura();
+      return;
+    }
+
+    box.innerHTML = itemsFactura.map((it, idx) => `
+      <div class="item-row">
+        <div style="flex:1;">
+          <strong>${it.nombre}</strong> x${it.cantidad}<br>
+          <small style="color:var(--gris);">${it.detalle || ''}</small>
+        </div>
+        <div style="text-align:right;">
+          <strong>${fmtUSD(it.precio * it.cantidad)}</strong><br>
+          <button class="btn btn-outline btn-sm" style="padding:2px 7px; color:var(--rojo); border-color:var(--rojo);" onclick="eliminarItemFactura(${idx})">Quitar</button>
+        </div>
+      </div>
+    `).join("");
+
+    recalcularFactura();
+  }
+
+  function toggleCamposAbono() {
+    const mod = document.getElementById("modalidad-pago").value;
+    document.getElementById("box-monto-abono").style.display = (mod === "Abono") ? "block" : "none";
+    recalcularFactura();
+  }
+
+  function recalcularFactura() {
+    const subtotal = itemsFactura.reduce((s, it) => s + (it.precio * it.cantidad), 0);
+    const tipoDesc = document.getElementById("tipo-descuento").value;
+    const valDesc = parseFloat(document.getElementById("valor-descuento").value) || 0;
+
+    let descuentoUSD = tipoDesc === "porcentaje" ? (subtotal * (valDesc / 100)) : valDesc;
+    descuentoUSD = Math.min(subtotal, Math.max(0, descuentoUSD));
+
+    const totalUSD = Math.max(0, subtotal - descuentoUSD);
+    const modalidad = document.getElementById("modalidad-pago").value;
+
+    let abonado = totalUSD;
+    if (modalidad === "Credito") abonado = 0;
+    if (modalidad === "Abono") abonado = Math.min(totalUSD, parseFloat(document.getElementById("monto-abono-inicial").value) || 0);
+
+    const saldo = Math.max(0, totalUSD - abonado);
+
+    document.getElementById("fac-subtotal").innerText = fmtUSD(subtotal);
+    document.getElementById("fac-descuento").innerText = "-" + fmtUSD(descuentoUSD);
+    document.getElementById("fac-total-usd").innerText = fmtUSD(totalUSD);
+    document.getElementById("fac-total-cop").innerText = fmtCOP(totalUSD) + " COP";
+    document.getElementById("fac-total-bs").innerText = fmtBS(totalUSD);
+
+    const lineaSaldo = document.getElementById("linea-saldo-fac");
+    if (saldo > 0.01) {
+      lineaSaldo.style.display = "flex";
+      document.getElementById("fac-saldo-usd").innerText = fmtUSD(saldo);
+    } else {
+      lineaSaldo.style.display = "none";
+    }
+
+    return { subtotal, descuentoUSD, totalUSD, modalidad, abonado, saldo };
+  }
+
+  async function guardarFactura(enviarWA) {
+    if (itemsFactura.length === 0) {
+      alert("Agrega al menos un producto o servicio.");
+      return;
+    }
+
+    const calc = recalcularFactura();
+    const idCliente = document.getElementById("sel-cliente-factura").value;
+    const cliObj = db.clientes.find(c => c.ID_Cliente === idCliente);
+    const clienteNombre = cliObj ? cliObj.Nombre : "Cliente Contado";
+
+    const data = {
+      idCliente,
+      clienteNombre,
+      items: itemsFactura,
+      subtotal: calc.subtotal,
+      descuento: calc.descuentoUSD,
+      modalidad: calc.modalidad,
+      abonado: calc.abonado,
+      tasaBCV,
+      tasaCOP,
+      monedaPago: document.getElementById("moneda-pago-venta").value,
+      metodoPago: document.getElementById("metodo-pago-venta").value
+    };
+
+    const res = await postScript({ action: "registrarVenta", data });
+    if (res && res.status === "ok") {
+      if (enviarWA) {
+        let msg = `🍷 *BELLOI.SHOP — NOTA DE ENTREGA*
+`;
+        msg += `Factura: *${res.idFactura}*
+`;
+        msg += `Cliente: *${clienteNombre}*
+`;
+        msg += `----------------------
+`;
+        itemsFactura.forEach(it => {
+          msg += `▪️ ${it.nombre} (${it.detalle || 'Estándar'}) x${it.cantidad}: *${fmtUSD(it.precio * it.cantidad)}*
+`;
+        });
+        msg += `----------------------
+`;
+        if (calc.descuentoUSD > 0) msg += `Descuento: -${fmtUSD(calc.descuentoUSD)}
+`;
+        msg += `*TOTAL USD:* ${fmtUSD(calc.totalUSD)}
+`;
+        msg += `*TOTAL COP:* ${fmtCOP(calc.totalUSD)} COP
+`;
+        msg += `*TOTAL Bs.:* ${fmtBS(calc.totalUSD)}
+`;
+        if (calc.saldo > 0.01) {
+          msg += `
+💵 *Abonado:* ${fmtUSD(calc.abonado)}
+`;
+          msg += `⏳ *Saldo Pendiente:* ${fmtUSD(calc.saldo)}
+`;
+        }
+        const tel = cliObj && cliObj.Telefono ? cliObj.Telefono.replace(/\D/g, "") : "";
+        const waUrl = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, "_blank");
+      }
+
+      alert(`Factura ${res.idFactura} guardada e inventario actualizado.`);
+      itemsFactura = [];
+      document.getElementById("valor-descuento").value = 0;
+      document.getElementById("monto-abono-inicial").value = 0;
+      renderizarItemsFactura();
+      await sincronizarTodo();
+    }
+  }
+
+  // ==========================================
+  // CRÉDITOS Y ABONOS
+  // ==========================================
+  function renderizarCreditosYVentas() {
+    const pendientes = db.ventas.filter(v => String(v.Estado) !== "Pagada" && parseFloat(v.Saldo_USD) > 0.01);
+    const boxCred = document.getElementById("lista-creditos");
+
+    if (pendientes.length === 0) {
+      boxCred.innerHTML = `<p style="font-size:12.5px; color:var(--gris);">No tienes facturas pendientes por cobrar.</p>`;
+    } else {
+      boxCred.innerHTML = pendientes.map(v => `
+        <div class="item-row">
+          <div>
+            <strong>${v.Cliente_Nombre}</strong> <span class="badge badge-pendiente">${v.ID_Factura}</span><br>
+            <small>Total: ${fmtUSD(v.Total_USD)} | Abonado: ${fmtUSD(v.Abonado_USD)}</small><br>
+            <strong style="color:var(--rojo);">Saldo: ${fmtUSD(v.Saldo_USD)} (${fmtCOP(v.Saldo_USD)} COP)</strong>
+          </div>
+          <div>
+            <button class="btn btn-verde btn-sm" onclick="abrirModalAbono('${v.ID_Factura}', '${v.Cliente_Nombre}', ${v.Saldo_USD})">+ Abonar</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    const boxHist = document.getElementById("lista-ventas-historial");
+    const ultimas = [...db.ventas].reverse().slice(0, 15);
+    boxHist.innerHTML = ultimas.map(v => {
+      const cls = v.Estado === "Pagada" ? "badge-pagada" : (v.Estado === "Abonada" ? "badge-abonada" : "badge-pendiente");
+      return `
+        <div class="item-row">
+          <div>
+            <strong>${v.Cliente_Nombre}</strong> (${v.ID_Factura})<br>
+            <small style="color:var(--gris);">${v.Fecha}</small>
+          </div>
+          <div style="text-align:right;">
+            <strong>${fmtUSD(v.Total_USD)}</strong><br>
+            <span class="badge ${cls}">${v.Estado}</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function abrirModalAbono(idFactura, cliente, saldo) {
+    document.getElementById("abono-id-factura").value = idFactura;
+    document.getElementById("abono-cliente-nombre").value = cliente;
+    document.getElementById("abono-info-factura").innerText = `Factura ${idFactura} — ${cliente} | Saldo: ${fmtUSD(saldo)}`;
+    document.getElementById("abono-monto-usd").value = parseFloat(saldo).toFixed(2);
+    document.getElementById("modal-abono").style.display = "block";
+  }
+
+  async function confirmarAbono() {
+    const data = {
+      idFactura: document.getElementById("abono-id-factura").value,
+      cliente: document.getElementById("abono-cliente-nombre").value,
+      montoUSD: parseFloat(document.getElementById("abono-monto-usd").value) || 0,
+      monedaPago: document.getElementById("abono-moneda").value,
+      montoOriginal: parseFloat(document.getElementById("abono-monto-usd").value) || 0,
+      metodo: document.getElementById("abono-metodo").value
+    };
+    if (data.montoUSD <= 0) return;
+
+    const res = await postScript({ action: "registrarAbono", data });
+    if (res && res.status === "ok") {
+      cerrarModales();
+      alert("Abono registrado.");
+      await sincronizarTodo();
+    }
+  }
+
+  // ==========================================
+  // INVENTARIO Y SERVICIOS PRIVADOS
+  // ==========================================
+  function renderizarInventario() {
+    const q = (document.getElementById("buscar-inv").value || "").toLowerCase();
+    const filtrados = db.inventario.filter(p =>
+      p.nombre.toLowerCase().includes(q) || p.detalle.toLowerCase().includes(q) || p.hoja.toLowerCase().includes(q)
+    );
+
+    document.getElementById("lista-inventario").innerHTML = filtrados.map(p => `
+      <div class="item-row">
+        <div>
+          ${p.esPrivado ? `<span class="badge badge-privado">PRIVADO</span> ` : ``}
+          <strong>${p.nombre}</strong><br>
+          <small style="color:var(--gris);">${p.hoja} • ${p.detalle} ${p.tallas ? '(' + p.tallas + ')' : ''}</small>
+        </div>
+        <div style="text-align:right;">
+          <strong>${fmtUSD(p.precio)}</strong><br>
+          <small>Costo: ${fmtUSD(p.costo)} | <strong>Stock: ${p.stock}</strong></small>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function abrirModalServicioPrivado() {
+    document.getElementById("modal-privado").style.display = "block";
+  }
+
+  async function crearServicioPrivado() {
+    const data = {
+      nombre: document.getElementById("priv-nombre").value.trim(),
+      detalle: document.getElementById("priv-detalle").value.trim(),
+      precio: document.getElementById("priv-precio").value,
+      costo: document.getElementById("priv-costo").value,
+      stock: document.getElementById("priv-stock").value
+    };
+    if (!data.nombre) return;
+    const res = await postScript({ action: "guardarProductoPrivado", data });
+    if (res && res.status === "ok") {
+      cerrarModales();
+      alert("Servicio privado guardado.");
+      await sincronizarTodo();
+    }
+  }
+
+  // ==========================================
+  // ESCÁNER DE FACTURAS DE COMPRA Y GASTOS
+  // ==========================================
+  function procesarFotoFactura(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const estado = document.getElementById("estado-escaner");
+    estado.innerText = "⏳ Leyendo factura con IA, espera unos segundos...";
+
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      const base64Full = e.target.result;
+      const base64Data = base64Full.split(",")[1];
+      const mimeType = file.type || "image/jpeg";
+
+      const res = await postScript({
+        action: "escanearFactura",
+        imageBase64: base64Data,
+        mimeType: mimeType,
+        apiKey: GEMINI_KEY
+      });
+
+      if (res && res.status === "ok" && res.factura) {
+        estado.innerText = "✅ Factura escaneada. Revisa los datos antes de guardar:";
+        document.getElementById("comp-proveedor").value = res.factura.proveedor || "";
+        document.getElementById("comp-envio").value = res.factura.envio_detectado || 0;
+        itemsCompra = (res.factura.items || []).map(it => ({
+          nombre: it.nombre || "",
+          cantidad: parseInt(it.cantidad) || 1,
+          costoUnitario: parseFloat(it.costo_unitario) || 0,
+          uidInventario: "",
+          crearEnPrivado: false
+        }));
+        renderizarItemsCompra();
+      } else {
+        estado.innerText = "⚠️ " + (res ? res.mensaje : "No se pudo leer la foto.");
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function agregarFilaCompraManual() {
+    itemsCompra.push({ nombre: "", cantidad: 1, costoUnitario: 0, uidInventario: "", crearEnPrivado: false });
+    renderizarItemsCompra();
+  }
+
+  function renderizarItemsCompra() {
+    const box = document.getElementById("comp-items-container");
+    const opcionesInv = `<option value="">-- No vincular / Nuevo --</option>` +
+      db.inventario.map(p => `<option value="${p.uid}">${p.nombre} (${p.hoja})</option>`).join("");
+
+    box.innerHTML = itemsCompra.map((it, idx) => `
+      <div style="background:var(--fondo); padding:8px; border-radius:8px; margin-bottom:8px; border:1px solid var(--borde);">
+        <label>Producto detectado</label>
+        <input type="text" value="${it.nombre}" oninput="itemsCompra[${idx}].nombre=this.value">
+        <label>Vincular a producto existente (para sumar stock)</label>
+        <select onchange="itemsCompra[${idx}].uidInventario=this.value">${opcionesInv}</select>
+        <div class="grid-2">
+          <div>
+            <label>Cantidad</label>
+            <input type="number" value="${it.cantidad}" oninput="itemsCompra[${idx}].cantidad=parseInt(this.value)||0; recalcularCompra()">
+          </div>
+          <div>
+            <label>Costo Unitario ($ USD)</label>
+            <input type="number" step="0.01" value="${it.costoUnitario}" oninput="itemsCompra[${idx}].costoUnitario=parseFloat(this.value)||0; recalcularCompra()">
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    recalcularCompra();
+  }
+
+  function recalcularCompra() {
+    const sub = itemsCompra.reduce((s, it) => s + ((it.cantidad || 0) * (it.costoUnitario || 0)), 0);
+    const envio = parseFloat(document.getElementById("comp-envio").value) || 0;
+    document.getElementById("comp-total").value = fmtUSD(sub + envio);
+    return { subtotal: sub, envio };
+  }
+
+  async function guardarCompraInventario() {
+    if (itemsCompra.length === 0) {
+      alert("Escanea o agrega al menos un producto.");
+      return;
+    }
+    const calc = recalcularCompra();
+    const itemsProcesados = itemsCompra.map(it => {
+      const invObj = db.inventario.find(p => p.uid === it.uidInventario);
+      return {
+        nombre: it.nombre,
+        cantidad: it.cantidad,
+        costoUnitario: it.costoUnitario,
+        hoja: invObj ? invObj.hoja : "",
+        fila: invObj ? invObj.fila : "",
+        crearEnPrivado: !invObj
+      };
+    });
+
+    const data = {
+      proveedor: document.getElementById("comp-proveedor").value.trim(),
+      items: itemsProcesados,
+      subtotal: calc.subtotal,
+      envio: calc.envio
+    };
+
+    const res = await postScript({ action: "registrarCompra", data });
+    if (res && res.status === "ok") {
+      alert("Compra registrada y stock sumado.");
+      itemsCompra = [];
+      document.getElementById("comp-proveedor").value = "";
+      document.getElementById("comp-envio").value = 0;
+      renderizarItemsCompra();
+      await sincronizarTodo();
+    }
+  }
+
+  async function guardarGasto() {
+    const monto = parseFloat(document.getElementById("gasto-monto").value) || 0;
+    if (monto <= 0) return;
+    const data = {
+      categoria: document.getElementById("gasto-cat").value,
+      descripcion: document.getElementById("gasto-desc").value.trim(),
+      montoUSD: monto,
+      moneda: "USD",
+      montoOriginal: monto
+    };
+    const res = await postScript({ action: "registrarGasto", data });
+    if (res && res.status === "ok") {
+      document.getElementById("gasto-monto").value = "";
+      document.getElementById("gasto-desc").value = "";
+      alert("Gasto registrado.");
+      await sincronizarTodo();
+    }
+  }
+
+  // ==========================================
+  // CRM CLIENTES Y BALANCE FINANCIERO
+  // ==========================================
+  function renderizarBalanceYClientes() {
+    const totalCobrado = db.ventas.reduce((s, v) => s + (parseFloat(v.Abonado_USD) || 0), 0);
+    const totalPorCobrar = db.ventas.reduce((s, v) => s + (parseFloat(v.Saldo_USD) || 0), 0);
+    const totalCompras = db.compras.reduce((s, c) => s + (parseFloat(c.Subtotal_USD) || 0), 0);
+    const totalGastos = db.gastos.reduce((s, g) => s + (parseFloat(g.Monto_USD) || 0), 0);
+    const egresos = totalCompras + totalGastos;
+    const ganancia = totalCobrado - egresos;
+
+    document.getElementById("kpi-cobrado").innerText = fmtUSD(totalCobrado);
+    document.getElementById("kpi-por-cobrar").innerText = fmtUSD(totalPorCobrar);
+    document.getElementById("kpi-egresos").innerText = fmtUSD(egresos);
+    document.getElementById("kpi-ganancia").innerText = fmtUSD(ganancia);
+
+    const boxCli = document.getElementById("lista-clientes-crm");
+    if (db.clientes.length === 0) {
+      boxCli.innerHTML = `<p style="font-size:12.5px; color:var(--gris);">Aún no hay clientes registrados.</p>`;
+    } else {
+      boxCli.innerHTML = db.clientes.map(c => `
+        <div class="item-row">
+          <div>
+            <strong>${c.Nombre}</strong> (${c.Ciudad || 'Sin ciudad'})<br>
+            <small style="color:var(--gris);">${c.Telefono || ''} • ${c.Notas || ''}</small>
+          </div>
+          <div style="text-align:right;">
+            <small>Comprado: <strong>${fmtUSD(c.Total_Comprado_USD)}</strong></small><br>
+            ${parseFloat(c.Saldo_Pendiente_USD) > 0 ? `<small style="color:var(--rojo); font-weight:800;">Debe: ${fmtUSD(c.Saldo_Pendiente_USD)}</small>` : `<small style="color:var(--verde);">Al día</small>`}
+          </div>
+        </div>
+      `).join("");
+    }
+  }
+
+  function abrirModalCliente() {
+    document.getElementById("modal-cliente").style.display = "block";
+  }
+
+  async function crearCliente() {
+    const data = {
+      nombre: document.getElementById("cli-nombre").value.trim(),
+      telefono: document.getElementById("cli-tel").value.trim(),
+      ciudad: document.getElementById("cli-ciudad").value.trim(),
+      notas: document.getElementById("cli-notas").value.trim()
+    };
+    if (!data.nombre) return;
+    const res = await postScript({ action: "guardarCliente", data });
+    if (res && res.status === "ok") {
+      cerrarModales();
+      alert("Cliente registrado.");
+      await sincronizarTodo();
+    }
+  }
+
+  function cerrarModales() {
+    document.querySelectorAll(".modal-bg").forEach(m => m.style.display = "none");
+  }
+</script>
+</body>
+</html>
