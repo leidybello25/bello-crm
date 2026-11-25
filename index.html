@@ -6,15 +6,14 @@
 <title>Belloi.shop — CRM, Facturación e Inventario</title>
 <style>
   :root {
-    --vino: #5D0E26;
-    --vino-oscuro: #3D0818;
-    --vino-suave: #FDF2F5;
-    --dorado: #D4AF37;
+    --negro: #0B0B0D;
+    --negro-suave: #18181B;
     --amarillo: #FFD600;
-    --negro: #121215;
+    --amarillo-hover: #E6C000;
+    --amarillo-suave: #FEF9C3;
     --blanco: #FFFFFF;
-    --fondo: #F4F4F6;
-    --borde: #E2E2E8;
+    --fondo: #F4F4F5;
+    --borde: #E4E4E7;
     --gris: #52525B;
     --verde: #16A34A;
     --verde-claro: #DCFCE7;
@@ -33,14 +32,14 @@
     padding: 0;
     background-color: var(--fondo);
     color: var(--negro);
-    padding-bottom: 75px;
+    padding-bottom: 78px;
   }
 
   /* PANTALLA DE ACCESO */
   #login-screen {
     position: fixed;
     inset: 0;
-    background: linear-gradient(145deg, var(--vino-oscuro), var(--vino));
+    background: linear-gradient(145deg, #000000, var(--negro-suave));
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -55,26 +54,36 @@
     padding: 28px 22px;
     border-radius: 18px;
     text-align: center;
-    box-shadow: 0 20px 45px rgba(0,0,0,0.4);
-    border-top: 6px solid var(--dorado);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+    border: 2px solid var(--negro);
+    border-top: 7px solid var(--amarillo);
   }
 
   .login-card h1 {
     margin: 0 0 6px 0;
-    color: var(--vino);
-    font-size: 24px;
+    color: var(--negro);
+    font-size: 25px;
     font-weight: 900;
+    letter-spacing: 0.5px;
+  }
+
+  .login-card h1 span {
+    color: var(--amarillo);
+    background: var(--negro);
+    padding: 1px 6px;
+    border-radius: 6px;
   }
 
   .login-card p {
     margin: 0 0 18px 0;
     color: var(--gris);
     font-size: 13px;
+    font-weight: 600;
   }
 
   /* HEADER SUPERIOR */
   .topbar {
-    background: var(--vino);
+    background: var(--negro);
     color: var(--blanco);
     padding: 12px 14px;
     position: sticky;
@@ -83,8 +92,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid var(--dorado);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    border-bottom: 3px solid var(--amarillo);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
   }
 
   .brand-title {
@@ -102,30 +111,31 @@
     gap: 6px;
     align-items: center;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
   }
 
   .pill-moneda {
-    background: rgba(255,255,255,0.14);
+    background: rgba(255, 214, 0, 0.14);
+    color: var(--amarillo);
     padding: 4px 8px;
     border-radius: 20px;
     cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255, 214, 0, 0.45);
   }
 
-  /* NAVEGACIÓN INFERIOR / SUPERIOR */
+  /* NAVEGACIÓN INFERIOR */
   .nav-bar {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--blanco);
+    background: var(--negro);
     display: flex;
     justify-content: space-around;
-    border-top: 2px solid var(--vino);
-    padding: 6px 2px;
+    border-top: 2px solid var(--amarillo);
+    padding: 6px 4px;
     z-index: 850;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.22);
   }
 
   .nav-btn {
@@ -136,11 +146,12 @@
     align-items: center;
     font-size: 10.5px;
     font-weight: 800;
-    color: var(--gris);
+    color: #A1A1AA;
     cursor: pointer;
-    padding: 4px 6px;
-    border-radius: 8px;
+    padding: 5px 6px;
+    border-radius: 9px;
     flex: 1;
+    transition: 0.15s;
   }
 
   .nav-btn span.ico {
@@ -149,8 +160,8 @@
   }
 
   .nav-btn.activo {
-    color: var(--vino);
-    background: var(--vino-suave);
+    color: var(--negro);
+    background: var(--amarillo);
   }
 
   /* CONTENEDORES Y TARJETAS */
@@ -173,15 +184,16 @@
     border-radius: 14px;
     padding: 14px;
     margin-bottom: 12px;
-    border: 1px solid var(--borde);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    border: 1.5px solid var(--negro);
+    border-top: 4px solid var(--amarillo);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   }
 
   .card-title {
     margin: 0 0 10px 0;
     font-size: 15px;
     font-weight: 900;
-    color: var(--vino);
+    color: var(--negro);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -192,7 +204,7 @@
     display: block;
     font-size: 11.5px;
     font-weight: 800;
-    color: var(--gris);
+    color: var(--negro);
     margin-bottom: 4px;
     margin-top: 8px;
   }
@@ -200,15 +212,17 @@
   input, select, textarea {
     width: 100%;
     padding: 10px 11px;
-    border: 1.5px solid #CBD5E1;
+    border: 1.5px solid #A1A1AA;
     border-radius: 9px;
     font-size: 14px;
     outline: none;
     background: var(--blanco);
+    color: var(--negro);
   }
 
   input:focus, select:focus, textarea:focus {
-    border-color: var(--vino);
+    border-color: var(--negro);
+    box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.45);
   }
 
   .grid-2 {
@@ -228,7 +242,7 @@
     border-radius: 10px;
     padding: 11px 14px;
     font-size: 13.5px;
-    font-weight: 800;
+    font-weight: 900;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -236,17 +250,24 @@
     gap: 6px;
     width: 100%;
     margin-top: 10px;
+    transition: 0.15s;
   }
 
-  .btn-vino {
-    background: var(--vino);
-    color: var(--blanco);
+  .btn:active {
+    transform: scale(0.98);
   }
 
-  .btn-dorado {
+  .btn-negro {
+    background: var(--negro);
+    color: var(--amarillo);
+    border: 1.5px solid var(--negro);
+  }
+
+  .btn-amarillo {
     background: var(--amarillo);
     color: var(--negro);
     border: 1.5px solid var(--negro);
+    box-shadow: 2px 2px 0 var(--negro);
   }
 
   .btn-verde {
@@ -256,8 +277,8 @@
 
   .btn-outline {
     background: var(--blanco);
-    color: var(--vino);
-    border: 1.5px solid var(--vino);
+    color: var(--negro);
+    border: 1.5px solid var(--negro);
   }
 
   .btn-sm {
@@ -285,13 +306,14 @@
     background: var(--blanco);
     padding: 12px;
     border-radius: 12px;
-    border-left: 5px solid var(--vino);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    border: 1.5px solid var(--negro);
+    border-left: 6px solid var(--negro);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
   }
 
   .kpi-box.verde { border-left-color: var(--verde); }
   .kpi-box.rojo { border-left-color: var(--rojo); }
-  .kpi-box.dorado { border-left-color: var(--dorado); }
+  .kpi-box.amarillo { border-left-color: var(--amarillo); background: #FFFDF0; }
 
   .kpi-label {
     font-size: 11px;
@@ -336,9 +358,9 @@
   }
 
   .badge-pagada { background: var(--verde-claro); color: var(--verde); }
-  .badge-abonada { background: #FEF9C3; color: #854D0E; }
+  .badge-abonada { background: var(--amarillo-suave); color: #854D0E; border: 1px solid var(--amarillo); }
   .badge-pendiente { background: var(--rojo-claro); color: var(--rojo); }
-  .badge-privado { background: var(--vino); color: var(--blanco); }
+  .badge-privado { background: var(--negro); color: var(--amarillo); }
 
   .totales-panel {
     background: var(--negro);
@@ -346,6 +368,7 @@
     padding: 14px;
     border-radius: 12px;
     margin-top: 12px;
+    border: 1.5px solid var(--negro);
   }
 
   .totales-linea {
@@ -359,9 +382,20 @@
     font-size: 18px;
     font-weight: 900;
     color: var(--amarillo);
-    border-top: 1px solid rgba(255,255,255,0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     padding-top: 8px;
     margin-top: 6px;
+  }
+
+  .ganancia-tag {
+    display: inline-block;
+    background: rgba(22, 163, 74, 0.22);
+    color: #86EFAC;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 800;
+    margin-top: 4px;
   }
 
   /* MODAL */
@@ -369,7 +403,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75);
+    background: rgba(11, 11, 13, 0.8);
     z-index: 3000;
     padding: 16px;
     overflow-y: auto;
@@ -381,7 +415,8 @@
     margin: 20px auto;
     padding: 18px;
     border-radius: 16px;
-    border-top: 6px solid var(--vino);
+    border: 2px solid var(--negro);
+    border-top: 7px solid var(--amarillo);
   }
 
   .loader-bar {
@@ -390,8 +425,9 @@
     color: var(--negro);
     text-align: center;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 900;
     padding: 6px;
+    border-bottom: 1.5px solid var(--negro);
   }
 </style>
 </head>
@@ -400,10 +436,10 @@
 <!-- PANTALLA DE BLOQUEO -->
 <div id="login-screen">
   <div class="login-card">
-    <h1>BELLOI.SHOP</h1>
+    <h1>BELLOI<span>.SHOP</span></h1>
     <p>Panel Interno: CRM, Facturación e Inventario</p>
     <input type="password" id="input-pin" placeholder="Ingresa tu clave de acceso" onkeyup="if(event.key==='Enter') verificarPin()">
-    <button class="btn btn-vino" onclick="verificarPin()">Entrar al Sistema</button>
+    <button class="btn btn-amarillo" onclick="verificarPin()">Entrar al Sistema</button>
   </div>
 </div>
 
@@ -438,9 +474,9 @@
       <div class="grid-2" style="margin-top:8px;">
         <div>
           <label>Agregar del Inventario / Servicios</label>
-          <select id="sel-producto-factura"></select>
+          <select id="sel-producto-factura" onchange="actualizarSelectorTallaFactura()"></select>
         </div>
-        <div>
+        <div id="box-talla-factura">
           <label>Talla / Nota del ítem</label>
           <input type="text" id="inp-detalle-item" placeholder="Ej: Talla M / Logo pecho">
         </div>
@@ -452,20 +488,24 @@
           <input type="number" id="inp-cant-item" value="1" min="1">
         </div>
         <div style="display:flex; align-items:flex-end;">
-          <button class="btn btn-vino" style="margin-top:0;" onclick="agregarItemFactura()">+ Añadir Ítem</button>
+          <button class="btn btn-negro" style="margin-top:0;" onclick="agregarItemFactura()">+ Añadir Ítem</button>
         </div>
       </div>
 
       <!-- CONCEPTO LIBRE (SERVICIO ESPECIAL AL MOMENTO) -->
-      <details style="margin-top:10px; background:var(--vino-suave); padding:8px 10px; border-radius:9px;">
-        <summary style="font-size:12px; font-weight:800; color:var(--vino); cursor:pointer;">✨ Agregar Concepto Libre / Servicio Especial no listado</summary>
-        <div class="grid-2">
+      <details style="margin-top:10px; background:var(--amarillo-suave); border:1px solid var(--amarillo); padding:8px 10px; border-radius:9px;">
+        <summary style="font-size:12px; font-weight:900; color:var(--negro); cursor:pointer;">⚡ Agregar Concepto Libre / Servicio Especial no listado</summary>
+        <div class="grid-3">
           <div>
-            <label>Descripción del trabajo</label>
-            <input type="text" id="libre-nombre" placeholder="Ej: Diseño logo vectorial">
+            <label>Descripción</label>
+            <input type="text" id="libre-nombre" placeholder="Ej: Diseño logo">
           </div>
           <div>
-            <label>Precio USD ($)</label>
+            <label>Costo ($)</label>
+            <input type="number" id="libre-costo" step="0.01" placeholder="2.00">
+          </div>
+          <div>
+            <label>Precio ($)</label>
             <input type="number" id="libre-precio" step="0.01" placeholder="15.00">
           </div>
         </div>
@@ -531,21 +571,25 @@
         </div>
       </div>
 
-      <!-- TOTALES MULTI-MONEDA -->
+      <!-- TOTALES MULTI-MONEDA + GANANCIA ESTIMADA -->
       <div class="totales-panel">
         <div class="totales-linea"><span>Subtotal:</span><span id="fac-subtotal">$0,00</span></div>
+        <div class="totales-linea"><span>Costo Mercancía:</span><span id="fac-costo-total">$0,00</span></div>
         <div class="totales-linea"><span>Descuento:</span><span id="fac-descuento">-$0,00</span></div>
         <div class="totales-linea totales-final"><span>TOTAL USD:</span><span id="fac-total-usd">$0,00</span></div>
         <div class="totales-linea"><span>Total COP:</span><span id="fac-total-cop">$ 0</span></div>
         <div class="totales-linea"><span>Total Bs. (BCV):</span><span id="fac-total-bs">Bs. 0,00</span></div>
+        <div style="text-align:right;">
+          <span class="ganancia-tag" id="fac-ganancia-neta">Ganancia Neta Est.: $0,00</span>
+        </div>
         <div class="totales-linea" id="linea-saldo-fac" style="display:none; color:#FCA5A5; font-weight:800; margin-top:6px;">
           <span>Saldo Pendiente por Cobrar:</span><span id="fac-saldo-usd">$0,00</span>
         </div>
       </div>
 
       <div class="grid-2">
-        <button class="btn btn-vino" onclick="guardarFactura(false)">💾 Guardar y Descontar Stock</button>
-        <button class="btn btn-dorado" onclick="guardarFactura(true)">📲 Guardar y Enviar WhatsApp</button>
+        <button class="btn btn-negro" onclick="guardarFactura(false)">💾 Guardar y Descontar Stock</button>
+        <button class="btn btn-amarillo" onclick="guardarFactura(true)">📲 Guardar y Enviar WhatsApp</button>
       </div>
     </div>
   </div>
@@ -571,10 +615,10 @@
   <div id="sec-inventario" class="seccion">
     <div class="card">
       <div class="card-title">
-        <span>📦 Inventario y Servicios Ocultos</span>
-        <button class="btn btn-vino btn-sm" onclick="abrirModalServicioPrivado()">+ Servicio Privado</button>
+        <span>📦 Inventario y Servicios</span>
+        <button class="btn btn-amarillo btn-sm" onclick="abrirModalServicioPrivado()">+ Nuevo Producto / Privado</button>
       </div>
-      <input type="text" id="buscar-inv" placeholder="Buscar producto, talla o servicio privado..." onkeyup="renderizarInventario()">
+      <input type="text" id="buscar-inv" placeholder="Buscar producto, talla, costo o servicio..." onkeyup="renderizarInventario()">
       <div id="lista-inventario" style="margin-top:10px;"></div>
     </div>
   </div>
@@ -584,11 +628,11 @@
        ========================================== -->
   <div id="sec-compras" class="seccion">
     <div class="card">
-      <div class="card-title">📸 Escáner de Facturas de Compra (IA)</div>
-      <p style="font-size:12px; color:var(--gris); margin-top:0;">Toma una foto a la factura de tu proveedor para detectar productos, cantidades y costos automáticamente.</p>
+      <div class="card-title">📸 Registro de Compras a Proveedores</div>
+      <p style="font-size:12px; color:var(--gris); margin-top:0;">Registra facturas de compra para sumar stock y controlar inversión.</p>
 
       <input type="file" id="foto-factura" accept="image/*" capture="environment" onchange="procesarFotoFactura(event)">
-      <div id="estado-escaner" style="font-size:12.5px; font-weight:800; color:var(--vino); margin-top:8px;"></div>
+      <div id="estado-escaner" style="font-size:12.5px; font-weight:800; color:var(--negro); margin-top:8px;"></div>
 
       <label>Proveedor</label>
       <input type="text" id="comp-proveedor" placeholder="Nombre del proveedor">
@@ -631,7 +675,7 @@
       </div>
       <label>Descripción</label>
       <input type="text" id="gasto-desc" placeholder="Ej: Compra de papel DTF / Pago internet">
-      <button class="btn btn-vino" onclick="guardarGasto()">Guardar Gasto</button>
+      <button class="btn btn-negro" onclick="guardarGasto()">Guardar Gasto</button>
     </div>
   </div>
 
@@ -643,45 +687,45 @@
       <div class="kpi-box verde">
         <div class="kpi-label">Ingresos Cobrados</div>
         <div class="kpi-val" id="kpi-cobrado">$0,00</div>
-        <div class="kpi-sub">Dinero real en caja</div>
+        <div class="kpi-sub">Dinero recibido en caja</div>
       </div>
-      <div class="kpi-box dorado">
+      <div class="kpi-box amarillo">
         <div class="kpi-label">Por Cobrar (Crédito)</div>
         <div class="kpi-val" id="kpi-por-cobrar">$0,00</div>
         <div class="kpi-sub">Saldos pendientes</div>
       </div>
       <div class="kpi-box rojo">
-        <div class="kpi-label">Compras + Gastos</div>
+        <div class="kpi-label">Costos + Gastos</div>
         <div class="kpi-val" id="kpi-egresos">$0,00</div>
-        <div class="kpi-sub">Mercancía, fletes y gastos</div>
+        <div class="kpi-sub">Costo mercancía y gastos</div>
       </div>
       <div class="kpi-box">
         <div class="kpi-label">Ganancia Neta Real</div>
         <div class="kpi-val" id="kpi-ganancia">$0,00</div>
-        <div class="kpi-sub">Cobrado menos egresos</div>
+        <div class="kpi-sub">Utilidad neta calculada</div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">
         <span>👥 Base de Datos de Clientes (CRM)</span>
-        <button class="btn btn-vino btn-sm" onclick="abrirModalCliente()">+ Cliente</button>
+        <button class="btn btn-negro btn-sm" onclick="abrirModalCliente()">+ Cliente</button>
       </div>
       <div id="lista-clientes-crm"></div>
     </div>
 
     <div class="card">
-      <div class="card-title">⚙️ Conexión Google Apps Script & Gemini IA</div>
+      <div class="card-title">⚙️ Conexión Google Apps Script & Seguridad</div>
       <label>URL de tu Web App (Google Apps Script)</label>
       <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/..../exec">
 
-      <label>API Key Gratuita de Google AI Studio (Para escáner de fotos)</label>
+      <label>API Key Gratuita de Google AI Studio (Opcional)</label>
       <input type="password" id="cfg-gemini-key" placeholder="AIzaSy...">
 
       <label>Clave de acceso a esta App</label>
       <input type="text" id="cfg-pin" value="1234">
 
-      <button class="btn btn-vino" onclick="guardarConfiguracion()">Guardar Configuración</button>
+      <button class="btn btn-amarillo" onclick="guardarConfiguracion()">Guardar Configuración</button>
     </div>
   </div>
 
@@ -711,34 +755,41 @@
     <input type="text" id="cli-ciudad" placeholder="Ej: Guasdualito">
     <label>Notas (Tallas habituales, preferencias)</label>
     <textarea id="cli-notas" rows="2" placeholder="Ej: Pide camisas talla M, prefiere DTF"></textarea>
-    <button class="btn btn-vino" onclick="crearCliente()">Guardar Cliente</button>
+    <button class="btn btn-amarillo" onclick="crearCliente()">Guardar Cliente</button>
   </div>
 </div>
 
-<!-- MODAL NUEVO SERVICIO PRIVADO -->
+<!-- MODAL NUEVO PRODUCTO / SERVICIO PRIVADO -->
 <div id="modal-privado" class="modal-bg">
   <div class="modal-box">
     <div class="card-title">
-      <span>🔒 Nuevo Servicio Especial (No público)</span>
+      <span>🔒 Agregar Producto / Servicio con Costo</span>
       <button class="btn btn-outline btn-sm" onclick="cerrarModales()">×</button>
     </div>
+    <label>Categoría / Hoja destino</label>
+    <select id="priv-hoja">
+      <option value="PRIVADO">Catálogo Privado (Solo CRM)</option>
+      <option value="PERSONALIZACION">Personalización (Público + CRM)</option>
+      <option value="BASICA">Camisa Básica Adulto (Público + CRM)</option>
+      <option value="BASICA NIÑO">Camisa Básica Niño (Público + CRM)</option>
+    </select>
     <label>Nombre del servicio / producto</label>
     <input type="text" id="priv-nombre" placeholder="Ej: Estampado DTF por metro">
-    <label>Detalle</label>
-    <input type="text" id="priv-detalle" placeholder="Ej: Solo clientes mayoristas">
+    <label>Detalle / Color</label>
+    <input type="text" id="priv-detalle" placeholder="Ej: Negro / Metro lineal">
     <div class="grid-2">
       <div>
-        <label>Precio Venta ($ USD)</label>
-        <input type="number" id="priv-precio" step="0.01">
+        <label>Costo Unitario ($ USD)</label>
+        <input type="number" id="priv-costo" step="0.01" placeholder="3.50">
       </div>
       <div>
-        <label>Costo ($ USD)</label>
-        <input type="number" id="priv-costo" step="0.01">
+        <label>Precio Venta ($ USD)</label>
+        <input type="number" id="priv-precio" step="0.01" placeholder="8.00">
       </div>
     </div>
     <label>Stock inicial</label>
-    <input type="number" id="priv-stock" value="100">
-    <button class="btn btn-vino" onclick="crearServicioPrivado()">Guardar en Catálogo Privado</button>
+    <input type="number" id="priv-stock" value="10">
+    <button class="btn btn-amarillo" onclick="crearServicioPrivado()">Guardar Producto</button>
   </div>
 </div>
 
@@ -768,9 +819,15 @@
 
 <script>
   // ==========================================
-  // ESTADO GLOBAL Y CONFIGURACIÓN
+  // URL FIJA DE GOOGLE APPS SCRIPT Y CONFIGURACIÓN
   // ==========================================
-  let SCRIPT_URL = localStorage.getItem("belloi_script_url") || "";
+  const URL_APPS_SCRIPT_FIJA = "https://script.google.com/macros/s/AKfycbweoZVNNFGGKV9sjvgm7GDVW_IxugRZ2WIha2QZmrk5cVBQPnHGjR5ErZcaZqa4cz7o/exec";
+
+  let SCRIPT_URL = localStorage.getItem("belloi_script_url") || URL_APPS_SCRIPT_FIJA;
+  if (!localStorage.getItem("belloi_script_url")) {
+    localStorage.setItem("belloi_script_url", URL_APPS_SCRIPT_FIJA);
+  }
+
   let GEMINI_KEY = localStorage.getItem("belloi_gemini_key") || "";
   let APP_PIN = localStorage.getItem("belloi_app_pin") || "1234";
 
@@ -804,7 +861,7 @@
   }
 
   function guardarConfiguracion() {
-    SCRIPT_URL = document.getElementById("cfg-script-url").value.trim();
+    SCRIPT_URL = document.getElementById("cfg-script-url").value.trim() || URL_APPS_SCRIPT_FIJA;
     GEMINI_KEY = document.getElementById("cfg-gemini-key").value.trim();
     APP_PIN = document.getElementById("cfg-pin").value.trim() || "1234";
 
@@ -876,40 +933,77 @@
     await sincronizarTodo();
   }
 
+  // Normaliza la respuesta del Apps Script para que lea tanto 'productos' como 'inventario'
+  function normalizarInventario(data) {
+    const listaCruda = data.productos || data.inventario || [];
+    return listaCruda.map((p, index) => {
+      let stockTotal = 0;
+      let resumenTallas = "";
+      let tallasObj = null;
+
+      if (p.tallas && typeof p.tallas === "object" && !Array.isArray(p.tallas)) {
+        tallasObj = p.tallas;
+        const entradas = Object.entries(p.tallas);
+        stockTotal = entradas.reduce((acc, [_, info]) => acc + (Number(info.stock) || 0), 0);
+        resumenTallas = entradas.map(([talla, info]) => `${talla}:${info.stock}`).join(" | ");
+      } else {
+        stockTotal = Number(p.stock) || 0;
+        resumenTallas = typeof p.tallas === "string" ? p.tallas : "";
+      }
+
+      return {
+        uid: p.uid || `${p.hoja}_${p.fila}_${index}`,
+        hoja: p.hoja || "GENERAL",
+        fila: p.fila || 0,
+        nombre: p.nombre || "Sin nombre",
+        detalle: p.detalle || "",
+        costo: Number(p.costo) || 0,
+        precio: Number(p.precio) || 0,
+        stock: stockTotal,
+        tallasObj: tallasObj,
+        tallasTexto: resumenTallas,
+        esPrivado: p.hoja === "PRIVADO" || Boolean(p.esPrivado)
+      };
+    });
+  }
+
   async function sincronizarTodo() {
-    if (!SCRIPT_URL) {
-      alert("Paso pendiente: Pega la URL de tu Google Apps Script en la pestaña CRM/Caja > Configuración.");
-      return;
-    }
+    const urlFinal = SCRIPT_URL || URL_APPS_SCRIPT_FIJA;
     const loader = document.getElementById("loader-bar");
     loader.style.display = "block";
     try {
-      const resp = await fetch(`${SCRIPT_URL}?action=getAll&t=${Date.now()}`);
+      const resp = await fetch(`${urlFinal}?action=getAll&t=${Date.now()}`);
       const data = await resp.json();
-      if (data.status === "ok") {
-        db = data;
+      if (data.ok || data.status === "ok") {
+        db = {
+          inventario: normalizarInventario(data),
+          clientes: data.clientes || [],
+          ventas: data.ventas || [],
+          abonos: data.abonos || [],
+          compras: data.compras || [],
+          gastos: data.gastos || []
+        };
         poblarSelectores();
         renderizarInventario();
         renderizarCreditosYVentas();
         renderizarBalanceYClientes();
+      } else {
+        alert("Respuesta inesperada de Google Sheets: " + (data.error || ""));
       }
     } catch (e) {
       console.error(e);
-      alert("No se pudo conectar con Google Sheets. Verifica la URL del Script.");
+      alert("No se pudo conectar con Google Sheets. Verifica tu conexión a internet.");
     } finally {
       loader.style.display = "none";
     }
   }
 
   async function postScript(payload) {
-    if (!SCRIPT_URL) {
-      alert("Configura primero la URL de Google Apps Script.");
-      return null;
-    }
+    const urlFinal = SCRIPT_URL || URL_APPS_SCRIPT_FIJA;
     const loader = document.getElementById("loader-bar");
     loader.style.display = "block";
     try {
-      const resp = await fetch(SCRIPT_URL, {
+      const resp = await fetch(urlFinal, {
         method: "POST",
         body: JSON.stringify(payload)
       });
@@ -931,10 +1025,39 @@
       db.clientes.map(c => `<option value="${c.ID_Cliente}">${c.Nombre} (${c.Telefono || 'Sin tel'})</option>`).join("");
 
     const selProd = document.getElementById("sel-producto-factura");
+    if (db.inventario.length === 0) {
+      selProd.innerHTML = `<option value="">Sin productos cargados</option>`;
+      return;
+    }
+
     selProd.innerHTML = db.inventario.map(p => {
-      const tagPriv = p.esPrivado ? "🔒 [PRIVADO] " : "";
-      return `<option value="${p.uid}">${tagPriv}${p.nombre} — ${fmtUSD(p.precio)} (Stock: ${p.stock})</option>`;
+      const tagPriv = p.esPrivado ? "🔒 " : "";
+      const detalleCorto = p.detalle ? ` (${p.detalle})` : "";
+      return `<option value="${p.uid}">${tagPriv}${p.nombre}${detalleCorto} — Venta: ${fmtUSD(p.precio)} | Costo: ${fmtUSD(p.costo)} | Stock: ${p.stock}</option>`;
     }).join("");
+
+    actualizarSelectorTallaFactura();
+  }
+
+  function actualizarSelectorTallaFactura() {
+    const uid = document.getElementById("sel-producto-factura").value;
+    const prod = db.inventario.find(p => p.uid === uid);
+    const box = document.getElementById("box-talla-factura");
+
+    if (prod && prod.tallasObj) {
+      const opciones = Object.entries(prod.tallasObj).map(([talla, info]) =>
+        `<option value="${talla}" data-col="${info.colIndex}">Talla ${talla} (Disp: ${info.stock})</option>`
+      ).join("");
+      box.innerHTML = `
+        <label>Selecciona Talla (descuenta stock)</label>
+        <select id="sel-talla-item">${opciones}</select>
+      `;
+    } else {
+      box.innerHTML = `
+        <label>Talla / Nota del ítem</label>
+        <input type="text" id="inp-detalle-item" placeholder="Ej: Logo pecho / Estándar">
+      `;
+    }
   }
 
   function agregarItemFactura() {
@@ -942,40 +1065,59 @@
     const prod = db.inventario.find(p => p.uid === uid);
     if (!prod) return;
 
-    const detalleExtra = document.getElementById("inp-detalle-item").value.trim();
     const cantidad = Math.max(1, parseInt(document.getElementById("inp-cant-item").value) || 1);
+    let detalleItem = prod.detalle || "";
+    let tallaColIndex = null;
+
+    const selTalla = document.getElementById("sel-talla-item");
+    if (selTalla) {
+      const opt = selTalla.options[selTalla.selectedIndex];
+      const tallaElegida = selTalla.value;
+      tallaColIndex = opt ? Number(opt.getAttribute("data-col")) : null;
+      detalleItem = `${prod.detalle ? prod.detalle + ' • ' : ''}Talla ${tallaElegida}`;
+    } else {
+      const inpNota = document.getElementById("inp-detalle-item");
+      if (inpNota && inpNota.value.trim()) {
+        detalleItem = inpNota.value.trim();
+      }
+      if (inpNota) inpNota.value = "";
+    }
 
     itemsFactura.push({
       uid: prod.uid,
       hoja: prod.hoja,
       fila: prod.fila,
+      tallaColIndex: tallaColIndex,
       nombre: prod.nombre,
-      detalle: detalleExtra || prod.detalle,
+      detalle: detalleItem,
+      costo: prod.costo,
       precio: prod.precio,
       cantidad: cantidad,
       esConceptoLibre: false
     });
 
-    document.getElementById("inp-detalle-item").value = "";
     document.getElementById("inp-cant-item").value = 1;
     renderizarItemsFactura();
   }
 
   function agregarConceptoLibre() {
     const nombre = document.getElementById("libre-nombre").value.trim();
+    const costo = parseFloat(document.getElementById("libre-costo").value) || 0;
     const precio = parseFloat(document.getElementById("libre-precio").value) || 0;
     if (!nombre || precio <= 0) {
-      alert("Escribe el nombre del servicio y su precio.");
+      alert("Escribe el nombre del servicio y su precio de venta.");
       return;
     }
     itemsFactura.push({
       nombre: nombre,
       detalle: "Servicio especial a medida",
+      costo: costo,
       precio: precio,
       cantidad: 1,
       esConceptoLibre: true
     });
     document.getElementById("libre-nombre").value = "";
+    document.getElementById("libre-costo").value = "";
     document.getElementById("libre-precio").value = "";
     renderizarItemsFactura();
   }
@@ -993,18 +1135,24 @@
       return;
     }
 
-    box.innerHTML = itemsFactura.map((it, idx) => `
-      <div class="item-row">
-        <div style="flex:1;">
-          <strong>${it.nombre}</strong> x${it.cantidad}<br>
-          <small style="color:var(--gris);">${it.detalle || ''}</small>
+    box.innerHTML = itemsFactura.map((it, idx) => {
+      const subVenta = it.precio * it.cantidad;
+      const subCosto = (it.costo || 0) * it.cantidad;
+      const gananciaItem = subVenta - subCosto;
+      return `
+        <div class="item-row">
+          <div style="flex:1;">
+            <strong>${it.nombre}</strong> x${it.cantidad}<br>
+            <small style="color:var(--gris);">${it.detalle || ''}</small><br>
+            <small style="color:var(--verde); font-weight:700;">Costo: ${fmtUSD(subCosto)} | Ganancia: ${fmtUSD(gananciaItem)}</small>
+          </div>
+          <div style="text-align:right;">
+            <strong>${fmtUSD(subVenta)}</strong><br>
+            <button class="btn btn-outline btn-sm" style="padding:2px 7px; color:var(--rojo); border-color:var(--rojo);" onclick="eliminarItemFactura(${idx})">Quitar</button>
+          </div>
         </div>
-        <div style="text-align:right;">
-          <strong>${fmtUSD(it.precio * it.cantidad)}</strong><br>
-          <button class="btn btn-outline btn-sm" style="padding:2px 7px; color:var(--rojo); border-color:var(--rojo);" onclick="eliminarItemFactura(${idx})">Quitar</button>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
 
     recalcularFactura();
   }
@@ -1017,6 +1165,7 @@
 
   function recalcularFactura() {
     const subtotal = itemsFactura.reduce((s, it) => s + (it.precio * it.cantidad), 0);
+    const costoTotal = itemsFactura.reduce((s, it) => s + ((it.costo || 0) * it.cantidad), 0);
     const tipoDesc = document.getElementById("tipo-descuento").value;
     const valDesc = parseFloat(document.getElementById("valor-descuento").value) || 0;
 
@@ -1024,6 +1173,7 @@
     descuentoUSD = Math.min(subtotal, Math.max(0, descuentoUSD));
 
     const totalUSD = Math.max(0, subtotal - descuentoUSD);
+    const gananciaNeta = totalUSD - costoTotal;
     const modalidad = document.getElementById("modalidad-pago").value;
 
     let abonado = totalUSD;
@@ -1033,10 +1183,12 @@
     const saldo = Math.max(0, totalUSD - abonado);
 
     document.getElementById("fac-subtotal").innerText = fmtUSD(subtotal);
+    document.getElementById("fac-costo-total").innerText = fmtUSD(costoTotal);
     document.getElementById("fac-descuento").innerText = "-" + fmtUSD(descuentoUSD);
     document.getElementById("fac-total-usd").innerText = fmtUSD(totalUSD);
     document.getElementById("fac-total-cop").innerText = fmtCOP(totalUSD) + " COP";
     document.getElementById("fac-total-bs").innerText = fmtBS(totalUSD);
+    document.getElementById("fac-ganancia-neta").innerText = `Ganancia Neta Est.: ${fmtUSD(gananciaNeta)}`;
 
     const lineaSaldo = document.getElementById("linea-saldo-fac");
     if (saldo > 0.01) {
@@ -1046,7 +1198,7 @@
       lineaSaldo.style.display = "none";
     }
 
-    return { subtotal, descuentoUSD, totalUSD, modalidad, abonado, saldo };
+    return { subtotal, costoTotal, descuentoUSD, totalUSD, gananciaNeta, modalidad, abonado, saldo };
   }
 
   async function guardarFactura(enviarWA) {
@@ -1060,58 +1212,47 @@
     const cliObj = db.clientes.find(c => c.ID_Cliente === idCliente);
     const clienteNombre = cliObj ? cliObj.Nombre : "Cliente Contado";
 
-    const data = {
+    const ventaPayload = {
       idCliente,
       clienteNombre,
       items: itemsFactura,
-      subtotal: calc.subtotal,
-      descuento: calc.descuentoUSD,
+      subtotalUSD: calc.subtotal,
+      descuentoUSD: calc.descuentoUSD,
+      totalUSD: calc.totalUSD,
       modalidad: calc.modalidad,
-      abonado: calc.abonado,
+      abonadoUSD: calc.abonado,
+      saldoUSD: calc.saldo,
       tasaBCV,
       tasaCOP,
       monedaPago: document.getElementById("moneda-pago-venta").value,
       metodoPago: document.getElementById("metodo-pago-venta").value
     };
 
-    const res = await postScript({ action: "registrarVenta", data });
-    if (res && res.status === "ok") {
+    const res = await postScript({ action: "registrarVenta", venta: ventaPayload });
+    if (res && (res.ok || res.status === "ok")) {
       if (enviarWA) {
-        let msg = `🍷 *BELLOI.SHOP — NOTA DE ENTREGA*
-`;
-        msg += `Factura: *${res.idFactura}*
-`;
-        msg += `Cliente: *${clienteNombre}*
-`;
-        msg += `----------------------
-`;
+        let msg = `⚡ *BELLOI.SHOP — NOTA DE ENTREGA* ⚡\n`;
+        msg += `Factura: *${res.idFactura}*\n`;
+        msg += `Cliente: *${clienteNombre}*\n`;
+        msg += `----------------------\n`;
         itemsFactura.forEach(it => {
-          msg += `▪️ ${it.nombre} (${it.detalle || 'Estándar'}) x${it.cantidad}: *${fmtUSD(it.precio * it.cantidad)}*
-`;
+          msg += `▪️ ${it.nombre} (${it.detalle || 'Estándar'}) x${it.cantidad}: *${fmtUSD(it.precio * it.cantidad)}*\n`;
         });
-        msg += `----------------------
-`;
-        if (calc.descuentoUSD > 0) msg += `Descuento: -${fmtUSD(calc.descuentoUSD)}
-`;
-        msg += `*TOTAL USD:* ${fmtUSD(calc.totalUSD)}
-`;
-        msg += `*TOTAL COP:* ${fmtCOP(calc.totalUSD)} COP
-`;
-        msg += `*TOTAL Bs.:* ${fmtBS(calc.totalUSD)}
-`;
+        msg += `----------------------\n`;
+        if (calc.descuentoUSD > 0) msg += `Descuento: -${fmtUSD(calc.descuentoUSD)}\n`;
+        msg += `*TOTAL USD:* ${fmtUSD(calc.totalUSD)}\n`;
+        msg += `*TOTAL COP:* ${fmtCOP(calc.totalUSD)} COP\n`;
+        msg += `*TOTAL Bs.:* ${fmtBS(calc.totalUSD)}\n`;
         if (calc.saldo > 0.01) {
-          msg += `
-💵 *Abonado:* ${fmtUSD(calc.abonado)}
-`;
-          msg += `⏳ *Saldo Pendiente:* ${fmtUSD(calc.saldo)}
-`;
+          msg += `\n💵 *Abonado:* ${fmtUSD(calc.abonado)}\n`;
+          msg += `⏳ *Saldo Pendiente:* ${fmtUSD(calc.saldo)}\n`;
         }
-        const tel = cliObj && cliObj.Telefono ? cliObj.Telefono.replace(/\D/g, "") : "";
+        const tel = cliObj && cliObj.Telefono ? String(cliObj.Telefono).replace(/\D/g, "") : "";
         const waUrl = tel ? `https://wa.me/${tel}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, "_blank");
       }
 
-      alert(`Factura ${res.idFactura} guardada e inventario actualizado.`);
+      alert(`Factura ${res.idFactura} guardada. Ganancia neta: ${fmtUSD(calc.gananciaNeta)}`);
       itemsFactura = [];
       document.getElementById("valor-descuento").value = 0;
       document.getElementById("monto-abono-inicial").value = 0;
@@ -1124,7 +1265,7 @@
   // CRÉDITOS Y ABONOS
   // ==========================================
   function renderizarCreditosYVentas() {
-    const pendientes = db.ventas.filter(v => String(v.Estado) !== "Pagada" && parseFloat(v.Saldo_USD) > 0.01);
+    const pendientes = db.ventas.filter(v => String(v.Estado) !== "Pagado" && String(v.Estado) !== "Pagada" && parseFloat(v.Saldo_USD) > 0.01);
     const boxCred = document.getElementById("lista-creditos");
 
     if (pendientes.length === 0) {
@@ -1146,8 +1287,16 @@
 
     const boxHist = document.getElementById("lista-ventas-historial");
     const ultimas = [...db.ventas].reverse().slice(0, 15);
+    if (ultimas.length === 0) {
+      boxHist.innerHTML = `<p style="font-size:12.5px; color:var(--gris);">Aún no hay ventas registradas.</p>`;
+      return;
+    }
+
     boxHist.innerHTML = ultimas.map(v => {
-      const cls = v.Estado === "Pagada" ? "badge-pagada" : (v.Estado === "Abonada" ? "badge-abonada" : "badge-pendiente");
+      const est = String(v.Estado || "");
+      const cls = (est === "Pagado" || est === "Pagada") ? "badge-pagada" : (est === "Abonada" ? "badge-abonada" : "badge-pendiente");
+      const gan = parseFloat(v.Ganancia_USD);
+      const ganBadge = !isNaN(gan) ? `<br><small style="color:var(--verde); font-weight:700;">Ganancia: ${fmtUSD(gan)}</small>` : "";
       return `
         <div class="item-row">
           <div>
@@ -1155,8 +1304,8 @@
             <small style="color:var(--gris);">${v.Fecha}</small>
           </div>
           <div style="text-align:right;">
-            <strong>${fmtUSD(v.Total_USD)}</strong><br>
-            <span class="badge ${cls}">${v.Estado}</span>
+            <strong>${fmtUSD(v.Total_USD)}</strong>${ganBadge}<br>
+            <span class="badge ${cls}">${est || 'Registrada'}</span>
           </div>
         </div>
       `;
@@ -1172,18 +1321,18 @@
   }
 
   async function confirmarAbono() {
-    const data = {
+    const abonoPayload = {
       idFactura: document.getElementById("abono-id-factura").value,
       cliente: document.getElementById("abono-cliente-nombre").value,
       montoUSD: parseFloat(document.getElementById("abono-monto-usd").value) || 0,
-      monedaPago: document.getElementById("abono-moneda").value,
+      moneda: document.getElementById("abono-moneda").value,
       montoOriginal: parseFloat(document.getElementById("abono-monto-usd").value) || 0,
       metodo: document.getElementById("abono-metodo").value
     };
-    if (data.montoUSD <= 0) return;
+    if (abonoPayload.montoUSD <= 0) return;
 
-    const res = await postScript({ action: "registrarAbono", data });
-    if (res && res.status === "ok") {
+    const res = await postScript({ action: "registrarAbono", abono: abonoPayload });
+    if (res && (res.ok || res.status === "ok")) {
       cerrarModales();
       alert("Abono registrado.");
       await sincronizarTodo();
@@ -1196,22 +1345,35 @@
   function renderizarInventario() {
     const q = (document.getElementById("buscar-inv").value || "").toLowerCase();
     const filtrados = db.inventario.filter(p =>
-      p.nombre.toLowerCase().includes(q) || p.detalle.toLowerCase().includes(q) || p.hoja.toLowerCase().includes(q)
+      p.nombre.toLowerCase().includes(q) ||
+      p.detalle.toLowerCase().includes(q) ||
+      p.hoja.toLowerCase().includes(q) ||
+      p.tallasTexto.toLowerCase().includes(q)
     );
 
-    document.getElementById("lista-inventario").innerHTML = filtrados.map(p => `
-      <div class="item-row">
-        <div>
-          ${p.esPrivado ? `<span class="badge badge-privado">PRIVADO</span> ` : ``}
-          <strong>${p.nombre}</strong><br>
-          <small style="color:var(--gris);">${p.hoja} • ${p.detalle} ${p.tallas ? '(' + p.tallas + ')' : ''}</small>
+    if (filtrados.length === 0) {
+      document.getElementById("lista-inventario").innerHTML = `<p style="font-size:12.5px; color:var(--gris);">No se encontraron productos.</p>`;
+      return;
+    }
+
+    document.getElementById("lista-inventario").innerHTML = filtrados.map(p => {
+      const gananciaUnit = p.precio - p.costo;
+      return `
+        <div class="item-row">
+          <div style="flex:1;">
+            ${p.esPrivado ? `<span class="badge badge-privado">PRIVADO</span> ` : ``}
+            <strong>${p.nombre}</strong><br>
+            <small style="color:var(--gris);">${p.hoja}${p.detalle ? ' • ' + p.detalle : ''}</small>
+            ${p.tallasTexto ? `<br><small style="color:var(--negro); font-weight:700;">Tallas: ${p.tallasTexto}</small>` : ''}
+          </div>
+          <div style="text-align:right;">
+            <strong>Venta: ${fmtUSD(p.precio)}</strong><br>
+            <small>Costo: ${fmtUSD(p.costo)} | <span style="color:var(--verde); font-weight:800;">Gan: ${fmtUSD(gananciaUnit)}</span></small><br>
+            <small><strong>Stock: ${p.stock}</strong></small>
+          </div>
         </div>
-        <div style="text-align:right;">
-          <strong>${fmtUSD(p.precio)}</strong><br>
-          <small>Costo: ${fmtUSD(p.costo)} | <strong>Stock: ${p.stock}</strong></small>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   function abrirModalServicioPrivado() {
@@ -1219,216 +1381,20 @@
   }
 
   async function crearServicioPrivado() {
-    const data = {
+    const prodPayload = {
+      hoja: document.getElementById("priv-hoja").value,
       nombre: document.getElementById("priv-nombre").value.trim(),
       detalle: document.getElementById("priv-detalle").value.trim(),
-      precio: document.getElementById("priv-precio").value,
-      costo: document.getElementById("priv-costo").value,
-      stock: document.getElementById("priv-stock").value
+      costo: parseFloat(document.getElementById("priv-costo").value) || 0,
+      precio: parseFloat(document.getElementById("priv-precio").value) || 0,
+      stock: parseInt(document.getElementById("priv-stock").value) || 0,
+      stockS: parseInt(document.getElementById("priv-stock").value) || 0,
+      stock02: parseInt(document.getElementById("priv-stock").value) || 0
     };
-    if (!data.nombre) return;
-    const res = await postScript({ action: "guardarProductoPrivado", data });
-    if (res && res.status === "ok") {
-      cerrarModales();
-      alert("Servicio privado guardado.");
-      await sincronizarTodo();
-    }
-  }
-
-  // ==========================================
-  // ESCÁNER DE FACTURAS DE COMPRA Y GASTOS
-  // ==========================================
-  function procesarFotoFactura(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const estado = document.getElementById("estado-escaner");
-    estado.innerText = "⏳ Leyendo factura con IA, espera unos segundos...";
-
-    const reader = new FileReader();
-    reader.onload = async function(e) {
-      const base64Full = e.target.result;
-      const base64Data = base64Full.split(",")[1];
-      const mimeType = file.type || "image/jpeg";
-
-      const res = await postScript({
-        action: "escanearFactura",
-        imageBase64: base64Data,
-        mimeType: mimeType,
-        apiKey: GEMINI_KEY
-      });
-
-      if (res && res.status === "ok" && res.factura) {
-        estado.innerText = "✅ Factura escaneada. Revisa los datos antes de guardar:";
-        document.getElementById("comp-proveedor").value = res.factura.proveedor || "";
-        document.getElementById("comp-envio").value = res.factura.envio_detectado || 0;
-        itemsCompra = (res.factura.items || []).map(it => ({
-          nombre: it.nombre || "",
-          cantidad: parseInt(it.cantidad) || 1,
-          costoUnitario: parseFloat(it.costo_unitario) || 0,
-          uidInventario: "",
-          crearEnPrivado: false
-        }));
-        renderizarItemsCompra();
-      } else {
-        estado.innerText = "⚠️ " + (res ? res.mensaje : "No se pudo leer la foto.");
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function agregarFilaCompraManual() {
-    itemsCompra.push({ nombre: "", cantidad: 1, costoUnitario: 0, uidInventario: "", crearEnPrivado: false });
-    renderizarItemsCompra();
-  }
-
-  function renderizarItemsCompra() {
-    const box = document.getElementById("comp-items-container");
-    const opcionesInv = `<option value="">-- No vincular / Nuevo --</option>` +
-      db.inventario.map(p => `<option value="${p.uid}">${p.nombre} (${p.hoja})</option>`).join("");
-
-    box.innerHTML = itemsCompra.map((it, idx) => `
-      <div style="background:var(--fondo); padding:8px; border-radius:8px; margin-bottom:8px; border:1px solid var(--borde);">
-        <label>Producto detectado</label>
-        <input type="text" value="${it.nombre}" oninput="itemsCompra[${idx}].nombre=this.value">
-        <label>Vincular a producto existente (para sumar stock)</label>
-        <select onchange="itemsCompra[${idx}].uidInventario=this.value">${opcionesInv}</select>
-        <div class="grid-2">
-          <div>
-            <label>Cantidad</label>
-            <input type="number" value="${it.cantidad}" oninput="itemsCompra[${idx}].cantidad=parseInt(this.value)||0; recalcularCompra()">
-          </div>
-          <div>
-            <label>Costo Unitario ($ USD)</label>
-            <input type="number" step="0.01" value="${it.costoUnitario}" oninput="itemsCompra[${idx}].costoUnitario=parseFloat(this.value)||0; recalcularCompra()">
-          </div>
-        </div>
-      </div>
-    `).join("");
-
-    recalcularCompra();
-  }
-
-  function recalcularCompra() {
-    const sub = itemsCompra.reduce((s, it) => s + ((it.cantidad || 0) * (it.costoUnitario || 0)), 0);
-    const envio = parseFloat(document.getElementById("comp-envio").value) || 0;
-    document.getElementById("comp-total").value = fmtUSD(sub + envio);
-    return { subtotal: sub, envio };
-  }
-
-  async function guardarCompraInventario() {
-    if (itemsCompra.length === 0) {
-      alert("Escanea o agrega al menos un producto.");
+    if (!prodPayload.nombre) {
+      alert("Escribe el nombre del producto o servicio.");
       return;
     }
-    const calc = recalcularCompra();
-    const itemsProcesados = itemsCompra.map(it => {
-      const invObj = db.inventario.find(p => p.uid === it.uidInventario);
-      return {
-        nombre: it.nombre,
-        cantidad: it.cantidad,
-        costoUnitario: it.costoUnitario,
-        hoja: invObj ? invObj.hoja : "",
-        fila: invObj ? invObj.fila : "",
-        crearEnPrivado: !invObj
-      };
-    });
-
-    const data = {
-      proveedor: document.getElementById("comp-proveedor").value.trim(),
-      items: itemsProcesados,
-      subtotal: calc.subtotal,
-      envio: calc.envio
-    };
-
-    const res = await postScript({ action: "registrarCompra", data });
-    if (res && res.status === "ok") {
-      alert("Compra registrada y stock sumado.");
-      itemsCompra = [];
-      document.getElementById("comp-proveedor").value = "";
-      document.getElementById("comp-envio").value = 0;
-      renderizarItemsCompra();
-      await sincronizarTodo();
-    }
-  }
-
-  async function guardarGasto() {
-    const monto = parseFloat(document.getElementById("gasto-monto").value) || 0;
-    if (monto <= 0) return;
-    const data = {
-      categoria: document.getElementById("gasto-cat").value,
-      descripcion: document.getElementById("gasto-desc").value.trim(),
-      montoUSD: monto,
-      moneda: "USD",
-      montoOriginal: monto
-    };
-    const res = await postScript({ action: "registrarGasto", data });
-    if (res && res.status === "ok") {
-      document.getElementById("gasto-monto").value = "";
-      document.getElementById("gasto-desc").value = "";
-      alert("Gasto registrado.");
-      await sincronizarTodo();
-    }
-  }
-
-  // ==========================================
-  // CRM CLIENTES Y BALANCE FINANCIERO
-  // ==========================================
-  function renderizarBalanceYClientes() {
-    const totalCobrado = db.ventas.reduce((s, v) => s + (parseFloat(v.Abonado_USD) || 0), 0);
-    const totalPorCobrar = db.ventas.reduce((s, v) => s + (parseFloat(v.Saldo_USD) || 0), 0);
-    const totalCompras = db.compras.reduce((s, c) => s + (parseFloat(c.Subtotal_USD) || 0), 0);
-    const totalGastos = db.gastos.reduce((s, g) => s + (parseFloat(g.Monto_USD) || 0), 0);
-    const egresos = totalCompras + totalGastos;
-    const ganancia = totalCobrado - egresos;
-
-    document.getElementById("kpi-cobrado").innerText = fmtUSD(totalCobrado);
-    document.getElementById("kpi-por-cobrar").innerText = fmtUSD(totalPorCobrar);
-    document.getElementById("kpi-egresos").innerText = fmtUSD(egresos);
-    document.getElementById("kpi-ganancia").innerText = fmtUSD(ganancia);
-
-    const boxCli = document.getElementById("lista-clientes-crm");
-    if (db.clientes.length === 0) {
-      boxCli.innerHTML = `<p style="font-size:12.5px; color:var(--gris);">Aún no hay clientes registrados.</p>`;
-    } else {
-      boxCli.innerHTML = db.clientes.map(c => `
-        <div class="item-row">
-          <div>
-            <strong>${c.Nombre}</strong> (${c.Ciudad || 'Sin ciudad'})<br>
-            <small style="color:var(--gris);">${c.Telefono || ''} • ${c.Notas || ''}</small>
-          </div>
-          <div style="text-align:right;">
-            <small>Comprado: <strong>${fmtUSD(c.Total_Comprado_USD)}</strong></small><br>
-            ${parseFloat(c.Saldo_Pendiente_USD) > 0 ? `<small style="color:var(--rojo); font-weight:800;">Debe: ${fmtUSD(c.Saldo_Pendiente_USD)}</small>` : `<small style="color:var(--verde);">Al día</small>`}
-          </div>
-        </div>
-      `).join("");
-    }
-  }
-
-  function abrirModalCliente() {
-    document.getElementById("modal-cliente").style.display = "block";
-  }
-
-  async function crearCliente() {
-    const data = {
-      nombre: document.getElementById("cli-nombre").value.trim(),
-      telefono: document.getElementById("cli-tel").value.trim(),
-      ciudad: document.getElementById("cli-ciudad").value.trim(),
-      notas: document.getElementById("cli-notas").value.trim()
-    };
-    if (!data.nombre) return;
-    const res = await postScript({ action: "guardarCliente", data });
-    if (res && res.status === "ok") {
+    const res = await postScript({ action: "agregarProducto", producto: prodPayload });
+    if (res && (res.ok || res.status === "ok")) {
       cerrarModales();
-      alert("Cliente registrado.");
-      await sincronizarTodo();
-    }
-  }
-
-  function cerrarModales() {
-    document.querySelectorAll(".modal-bg").forEach(m => m.style.display = "none");
-  }
-</script>
-</body>
-</html>
