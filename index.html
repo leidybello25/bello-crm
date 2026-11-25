@@ -1398,3 +1398,166 @@
     const res = await postScript({ action: "agregarProducto", producto: prodPayload });
     if (res && (res.ok || res.status === "ok")) {
       cerrarModales();
+      document.getElementById("priv-nombre").value = "";
+      document.getElementById("priv-detalle").value = "";
+      document.getElementById("priv-costo").value = "";
+      document.getElementById("priv-precio").value = "";
+      alert("Producto guardado con su costo y precio de venta.");
+      await sincronizarTodo();
+    }
+  }
+
+  // ==========================================
+  // COMPRAS Y GASTOS
+  // ==========================================
+  function procesarFotoFactura(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    document.getElementById("estado-escaner").innerText = "Foto cargada. Agrega abajo los ítems de la factura para sumarlos al inventario.";
+    if (itemsCompra.length === 0) agregarFilaCompraManual();
+  }
+
+  function agregarFilaCompraManual() {
+    itemsCompra.push({ nombre: "", cantidad: 1, costoUnitario: 0, uidInventario: "" });
+    renderizarItemsCompra();
+  }
+
+  function renderizarItemsCompra() {
+    const box = document.getElementById("comp-items-container");
+    const opcionesInv = `<option value="">-- Producto nuevo --</option>` +
+      db.inventario.map(p => `<option value="${p.uid}">${p.nombre} (${p.hoja})</option>`).join("");
+
+    box.innerHTML = itemsCompra.map((it, idx) => `
+      <div style="background:var(--fondo); padding:8px; border-radius:8px; margin-bottom:8px; border:1px solid var(--borde);">
+        <label>Producto comprado</label>
+        <input type="text" value="${it.nombre}" oninput="itemsCompra[${idx}].nombre=this.value">
+        <label>Vincular a inventario existente</label>
+        <select onchange="itemsCompra[${idx}].uidInventario=this.value">${opcionesInv}</select>
+        <div class="grid-2">
+          <div>
+            <label>Cantidad</label>
+            <input type="number" value="${it.cantidad}" oninput="itemsCompra[${idx}].cantidad=parseInt(this.value)||0; recalcularCompra()">
+          </div>
+          <div>
+            <label>Costo Unitario ($ USD)</label>
+            <input type="number" step="0.01" value="${it.costoUnitario}" oninput="itemsCompra[${idx}].costoUnitario=parseFloat(this.value)||0; recalcularCompra()">
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    recalcularCompra();
+  }
+
+  function recalcularCompra() {
+    const sub = itemsCompra.reduce((s, it) => s + ((it.cantidad || 0) * (it.costoUnitario || 0)), 0);
+    const envio = parseFloat(document.getElementById("comp-envio").value) || 0;
+    document.getElementById("comp-total").value = fmtUSD(sub + envio);
+    return { subtotal: sub, envio, total: sub + envio };
+  }
+
+  async function guardarCompraInventario() {
+    if (itemsCompra.length === 0) {
+      alert("Agrega al menos un producto.");
+      return;
+    }
+    const calc = recalcularCompra();
+    const compraPayload = {
+      proveedor: document.getElementById("comp-proveedor").value.trim(),
+      items: itemsCompra,
+      subtotalUSD: calc.subtotal,
+      envioUSD: calc.envio,
+      totalUSD: calc.total
+    };
+
+    const res = await postScript({ action: "registrarCompra", compra: compraPayload });
+    if (res && (res.ok || res.status === "ok")) {
+      alert("Compra registrada.");
+      itemsCompra = [];
+      document.getElementById("comp-proveedor").value = "";
+      document.getElementById("comp-envio").value = 0;
+      renderizarItemsCompra();
+      await sincronizarTodo();
+    }
+  }
+
+  async function guardarGasto() {
+    const monto = parseFloat(document.getElementById("gasto-monto").value) || 0;
+    if (monto <= 0) return;
+    const gastoPayload = {
+      categoria: document.getElementById("gasto-cat").value,
+      descripcion: document.getElementById("gasto-desc").value.trim(),
+      montoUSD: monto,
+      moneda: "USD",
+      montoOriginal: monto
+    };
+    const res = await postScript({ action: "registrarGasto", gasto: gastoPayload });
+    if (res && (res.ok || res.status === "ok")) {
+      document.getElementById("gasto-monto").value = "";
+      document.getElementById("gasto-desc").value = "";
+      alert("Gasto registrado.");
+      await sincronizarTodo();
+    }
+  }
+
+  // ==========================================
+  // CRM CLIENTES Y BALANCE FINANCIERO
+  // ==========================================
+  function renderizarBalanceYClientes() {
+    const totalCobrado = db.ventas.reduce((s, v) => s + (parseFloat(v.Abonado_USD) || 0), 0);
+    const totalPorCobrar = db.ventas.reduce((s, v) => s + (parseFloat(v.Saldo_USD) || 0), 0);
+    const costoVentas = db.ventas.reduce((s, v) => s + (parseFloat(v.Costo_Total_USD) || 0), 0);
+    const totalGastos = db.gastos.reduce((s, g) => s + (parseFloat(g.Monto_USD) || 0), 0);
+    const egresos = costoVentas + totalGastos;
+    const ganancia = totalCobrado - egresos;
+
+    document.getElementById("kpi-cobrado").innerText = fmtUSD(totalCobrado);
+    document.getElementById("kpi-por-cobrar").innerText = fmtUSD(totalPorCobrar);
+    document.getElementById("kpi-egresos").innerText = fmtUSD(egresos);
+    document.getElementById("kpi-ganancia").innerText = fmtUSD(ganancia);
+
+    const boxCli = document.getElementById("lista-clientes-crm");
+    if (db.clientes.length === 0) {
+      boxCli.innerHTML = `<p style="font-size:12.5px; color:var(--gris);">Aún no hay clientes registrados.</p>`;
+    } else {
+      boxCli.innerHTML = db.clientes.map(c => `
+        <div class="item-row">
+          <div>
+            <strong>${c.Nombre}</strong> (${c.Ciudad || 'Sin ciudad'})<br>
+            <small style="color:var(--gris);">${c.Telefono || ''} • ${c.Notas || ''}</small>
+          </div>
+          <div style="text-align:right;">
+            <small>Comprado: <strong>${fmtUSD(c.Total_Comprado_USD)}</strong></small><br>
+            ${parseFloat(c.Saldo_Pendiente_USD) > 0 ? `<small style="color:var(--rojo); font-weight:800;">Debe: ${fmtUSD(c.Saldo_Pendiente_USD)}</small>` : `<small style="color:var(--verde);">Al día</small>`}
+          </div>
+        </div>
+      `).join("");
+    }
+  }
+
+  function abrirModalCliente() {
+    document.getElementById("modal-cliente").style.display = "block";
+  }
+
+  async function crearCliente() {
+    const cliPayload = {
+      nombre: document.getElementById("cli-nombre").value.trim(),
+      telefono: document.getElementById("cli-tel").value.trim(),
+      ciudad: document.getElementById("cli-ciudad").value.trim(),
+      notas: document.getElementById("cli-notas").value.trim()
+    };
+    if (!cliPayload.nombre) return;
+    const res = await postScript({ action: "guardarCliente", cliente: cliPayload });
+    if (res && (res.ok || res.status === "ok")) {
+      cerrarModales();
+      alert("Cliente registrado.");
+      await sincronizarTodo();
+    }
+  }
+
+  function cerrarModales() {
+    document.querySelectorAll(".modal-bg").forEach(m => m.style.display = "none");
+  }
+</script>
+</body>
+</html>
